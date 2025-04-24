@@ -1,6 +1,7 @@
 import { getItem, removeItem, setItem } from '@/lib/storage';
+import { Env } from '@env';
 
-const TOKEN = 'token';
+const TOKEN = `${Env.PACKAGE}_token`;
 
 export type TokenType = {
   access: string;

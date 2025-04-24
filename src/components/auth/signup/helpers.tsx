@@ -9,6 +9,8 @@ import { createUserProfileIsNotExist } from '@/api/supabase/user/profile';
 import { supabase } from '@/services/supabase';
 import { hydrateAuth } from '@/lib';
 import { Alert } from 'react-native';
+import { removeToken, setToken } from '@/lib/auth/utils';
+import { setUserInfo } from '@/store/user';
 
 export const useAppleSignIn = () => {
   return async () => {
@@ -65,27 +67,54 @@ export const useGoogleSignIn = () => {
 
       if (signResp.type === 'success') {
         const  userInfo = signResp.data
-        console.log(userInfo, 'userInfo');
-      if (userInfo.idToken) {
-        const { data, error } = await supabase.auth.signInWithIdToken({
-          provider: 'google',
-          token: userInfo.idToken,
-        });
-        if (data.user?.email) {
-          const name = data.user?.email.split('@')[0];
-          createUserProfileIsNotExist({
-            email: data.user?.email,
-            display_name: name,
-            uid: data.user.id,
+        if (userInfo.idToken) {
+          const { data, error } = await supabase.auth.signInWithIdToken({
+            provider: 'google',
+            token: userInfo.idToken,
           });
-        }
 
-        console.log(error, data, 6677);
-        await hydrateAuth();
-        router.replace('/(app)');
-      } else {
-        throw new Error('no ID token present!');
-      }
+          // judge if the expired time is less than now
+          if (data.session?.access_token && data.session?.expires_at) {
+            const expiredTime = new Date(data.session.expires_at * 1000); 
+            const now = new Date();
+            if (expiredTime < now) {  
+              console.log('token expired!');
+              // clear Token
+              removeToken()
+              hydrateAuth();
+              return;
+            }
+            // update userinfo in store
+            const userInfo = {
+              email: data.user?.email,
+              display_name: data.user?.user_metadata.full_name,
+              uid: data.user.id
+            }
+            setUserInfo(userInfo);
+
+            // update token in storage
+            setToken({
+              access: data.session.access_token,
+              refresh: data.session.refresh_token,
+            })
+            // call hydrateAuth to update the store
+            hydrateAuth();
+            router.replace('/(app)');
+
+
+            // const name = data.user?.email.split('@')[0];
+            // createUserProfileIsNotExist({
+            //   email: data.user?.email,
+            //   display_name: name,
+            //   uid: data.user.id,
+            // });
+          }
+
+          console.log(error, data, 6677);
+          // router.replace('/(app)');
+        } else {
+          throw new Error('no ID token present!');
+        }
       }
       
     } catch (error: any) {

@@ -6,6 +6,8 @@ import * as z from 'zod';
 
 import { Button, ControlledInput, Text, View } from '@/components/ui';
 import { useSaveAppForm } from '@/api/supabase/use-save-app-forms';
+import { use } from 'i18next';
+import { useUserInfo } from '@/store/user';
 
 const schema = z.object({
   google_group_link: z.string().min(1, 'Google Group Link is required'),
@@ -17,18 +19,21 @@ const schema = z.object({
 export type AppFormType = z.infer<typeof schema>;
 
 export default function AddAppScreen() {
+  const userInfo = useUserInfo()
   const { handleSubmit, control } = useForm<AppFormType>({
     resolver: zodResolver(schema),
     defaultValues: {
       google_group_link: '',
       apk_link: '',
       web_link: '',
-      email: '',
+      email: userInfo?.email || '',
     },
   }); 
   const { mutateAsync: saveAppForm, isPending, data } = useSaveAppForm();   
 
+  console.log(userInfo, 'userInfo1111');
   const saveApp: SubmitHandler<AppFormType> = async (formValue) => {
+    console.log('formValue', formValue);
     await saveAppForm(formValue);
 
   };
