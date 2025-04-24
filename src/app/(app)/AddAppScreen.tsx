@@ -8,6 +8,7 @@ import { Button, ControlledInput, Text, View } from '@/components/ui';
 import { useSaveAppForm } from '@/api/supabase/use-save-app-forms';
 import { use } from 'i18next';
 import { useUserInfo } from '@/store/user';
+import { Alert } from 'react-native';
 
 const schema = z.object({
   google_group_link: z.string().min(1, 'Google Group Link is required'),
@@ -29,13 +30,23 @@ export default function AddAppScreen() {
       email: userInfo?.email || '',
     },
   }); 
-  const { mutateAsync: saveAppForm, isPending, data } = useSaveAppForm();   
+  const { mutateAsync: saveAppForm, isPending } = useSaveAppForm();   
 
-  console.log(userInfo, 'userInfo1111');
   const saveApp: SubmitHandler<AppFormType> = async (formValue) => {
     console.log('formValue', formValue);
-    await saveAppForm(formValue);
-
+    try {
+      const res = await saveAppForm(formValue);
+      if(res) {
+        Alert.alert('Success', 'App form saved successfully!');
+      }
+      
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred while saving the app form.';
+      Alert.alert('Error', errorMessage);
+      // Handle error here, e.g., show a message to the user
+      return;
+    }
+    
   };
 
   return (
@@ -91,6 +102,7 @@ export default function AddAppScreen() {
 
         <Button
           testID="saveAppButton"
+          
           label="Save App"
           loading={isPending}
           onPress={handleSubmit(saveApp)}

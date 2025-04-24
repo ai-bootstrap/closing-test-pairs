@@ -2,14 +2,15 @@ import { FlashList } from '@shopify/flash-list';
 import React from 'react';
 
 import type { Post } from '@/api';
-import { usePosts } from '@/api';
 import { Card } from '@/components/card';
 import { EmptyList, FocusAwareStatusBar, Text, View } from '@/components/ui';
+import { useAllAppForms } from '@/api/supabase/use-save-app-forms';
+import { AppFormType } from './AddAppScreen';
 
 export default function Feed() {
-  const { data, isPending, isError } = usePosts();
+  const { data, isPending, isError } = useAllAppForms();
   const renderItem = React.useCallback(
-    ({ item }: { item: Post }) => <Card {...item} />,
+    ({ item }: { item: AppFormType }) => <Card {...item} />,
     []
   );
 
