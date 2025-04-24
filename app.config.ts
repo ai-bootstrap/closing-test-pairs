@@ -20,6 +20,8 @@ const appIconBadgeConfig: AppIconBadgeConfig = {
   ],
 };
 
+console.log(Env.PACKAGE,'Env.PACKAGE')
+
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: Env.NAME,
@@ -29,7 +31,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   slug: 'obytesapp',
   version: Env.VERSION.toString(),
   orientation: 'portrait',
-  icon: './assets/icon.png',
+  icon: './assets/image.jpg',
   userInterfaceStyle: 'automatic',
   newArchEnabled: true,
   updates: {
@@ -48,7 +50,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   android: {
     adaptiveIcon: {
-      foregroundImage: './assets/adaptive-icon.png',
+      foregroundImage: './assets/image.jpg',
       backgroundColor: '#2E3C4B',
     },
     package: Env.PACKAGE,
@@ -62,7 +64,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       'expo-splash-screen',
       {
         backgroundColor: '#2E3C4B',
-        image: './assets/splash-icon.png',
+        image: './assets/image.jpg',
         imageWidth: 150,
       },
     ],
@@ -71,6 +73,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       {
         fonts: ['./assets/fonts/Inter.ttf'],
       },
+    ],
+    [
+      "@react-native-google-signin/google-signin",
+      // {
+      // WE MAY DON'T NEED THIS FOR ANDROID ONLY APP
+      //   "iosUrlScheme": "com.googleusercontent.apps._some_id_here_"
+      // }
     ],
     'expo-localization',
     'expo-router',

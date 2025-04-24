@@ -1,4 +1,4 @@
-package com.hkcare.development
+package com.androidclosingtestpairs.development
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

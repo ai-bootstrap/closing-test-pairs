@@ -25,8 +25,9 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="hkcare"/>
-        <data android:scheme="com.hkcare.development"/>
+        <data android:scheme="com.androidclosingtestpairs.development"/>
         <data android:scheme="exp+obytesapp"/>
+        <data android:scheme="ClosingTestPairs"/>
       </intent-filter>
     </activity>
   </application>

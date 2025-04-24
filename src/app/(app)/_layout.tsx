@@ -1,7 +1,8 @@
 /* eslint-disable react/no-unstable-nested-components */
 import { Link, Redirect, SplashScreen, Tabs } from 'expo-router';
 import React, { useCallback, useEffect } from 'react';
-
+import AntDesign from '@expo/vector-icons/AntDesign';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Pressable, Text } from '@/components/ui';
 import {
   Feed as FeedIcon,
@@ -27,9 +28,9 @@ export default function TabLayout() {
   if (isFirstTime) {
     return <Redirect href="/onboarding" />;
   }
-  // if (status === 'signOut') {
-  //   return <Redirect href="/login" />;
-  // }
+  if (status === 'signOut') {
+    return <Redirect href="/login" />;
+  }
   return (
     <Tabs>
       <Tabs.Screen
@@ -56,8 +57,16 @@ export default function TabLayout() {
         options={{
           title: 'Settings',
           headerShown: false,
-          tabBarIcon: ({ color }) => <SettingsIcon color={color} />,
+          tabBarIcon: ({ color }) => <MaterialIcons name="settings" size={24} color="black" />,
           tabBarButtonTestID: 'settings-tab',
+        }}
+      />
+      <Tabs.Screen
+        name="AddAppScreen"
+        options={{
+          title: 'AddApp',
+          headerShown: false,
+          tabBarIcon: ({ color }) => <AntDesign name='form' size={20} color={color} />,
         }}
       />
     </Tabs>
