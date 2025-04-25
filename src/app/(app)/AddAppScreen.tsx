@@ -39,7 +39,6 @@ export default function AddAppScreen() {
       if(res) {
         Alert.alert('Success', 'App form saved successfully!');
       }
-      
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'An error occurred while saving the app form.';
       Alert.alert('Error', errorMessage);

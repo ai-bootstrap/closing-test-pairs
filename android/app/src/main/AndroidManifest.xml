@@ -24,10 +24,15 @@
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="hkcare"/>
+        <data android:scheme="ClosingTestPairs"/>
         <data android:scheme="com.androidclosingtestpairs.development"/>
         <data android:scheme="exp+obytesapp"/>
-        <data android:scheme="ClosingTestPairs"/>
+      </intent-filter>
+      <intent-filter android:autoVerify="true" data-generated="true">
+        <action android:name="android.intent.action.VIEW"/>
+        <data android:scheme="ClosingTestPairs" android:host="check" android:pathPrefix="/apps"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <category android:name="android.intent.category.DEFAULT"/>
       </intent-filter>
     </activity>
   </application>
