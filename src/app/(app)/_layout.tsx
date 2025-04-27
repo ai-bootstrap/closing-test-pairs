@@ -30,9 +30,9 @@ export default function TabLayout() {
     return <Redirect href="/onboarding" />;
   }
   // TODO: release these block before production
-  // if (status === 'signOut') {
-  //   return <Redirect href="/login" />;
-  // }
+  if (status === 'signOut') {
+    return <Redirect href="/user/login" />;
+  }
   return (
     <Tabs>
       <Tabs.Screen

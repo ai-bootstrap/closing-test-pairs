@@ -16,7 +16,7 @@ export const SignUpSelectors = () => {
 
   async function onPressEmail() {
     await checkAgreement();
-    router.push('/login');
+    router.push('/user/login_email');
   }
 
   async function checkAgreement() {
@@ -77,6 +77,23 @@ export const SignUpSelectors = () => {
           </View>
         </View>
       </Pressable>
+
+      <Pressable
+        onPress={onPressEmail}
+        // pointerEvents={isPressable ? 'auto' : 'none'}
+      >
+        <View className="flex flex-row justify-center rounded rounded-s bg-black align-middle">
+          <View className="flex w-full flex-row items-center">
+            <View className="m-1 flex h-[44] w-12 flex-row items-center justify-center rounded rounded-s bg-white">
+              <Entypo name="email" size={24} color="orange" />
+            </View>
+            <Text className=" ml-5 rounded-s text-center text-lg font-bold text-charcoal-50">
+              Continue with Email
+            </Text>
+          </View>
+        </View>
+      </Pressable>
+
       <Pressable
         onPress={onPressMask}
         className='mt-4'

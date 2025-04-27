@@ -74,44 +74,8 @@ export const useGoogleSignIn = () => {
           });
 
           // judge if the expired time is less than now
-          if (data.session?.access_token && data.session?.expires_at) {
-            const expiredTime = new Date(data.session.expires_at * 1000); 
-            const now = new Date();
-            if (expiredTime < now) {  
-              console.log('token expired!');
-              // clear Token
-              removeToken()
-              hydrateAuth();
-              return;
-            }
-            // update userinfo in store
-            const userInfo = {
-              email: data.user?.email,
-              display_name: data.user?.user_metadata.full_name,
-              uid: data.user.id
-            }
-            setUserInfo(userInfo);
-
-            // update token in storage
-            setToken({
-              access: data.session.access_token,
-              refresh: data.session.refresh_token,
-            })
-            // call hydrateAuth to update the store
-            hydrateAuth();
-            router.replace('/(app)');
-
-
-            // const name = data.user?.email.split('@')[0];
-            // createUserProfileIsNotExist({
-            //   email: data.user?.email,
-            //   display_name: name,
-            //   uid: data.user.id,
-            // });
-          }
-
-          console.log(error, data, 6677);
-          // router.replace('/(app)');
+          // I want to use the logic in several places, so I put it in a function
+          checkTokenAndUpdateStore(data);  
         } else {
           throw new Error('no ID token present!');
         }
@@ -133,3 +97,41 @@ export const useGoogleSignIn = () => {
     }
   };
 };
+
+export const checkTokenAndUpdateStore = async (data: any) => { 
+  if (data.session?.access_token && data.session?.expires_at) {
+    const expiredTime = new Date(data.session.expires_at * 1000); 
+    const now = new Date();
+    if (expiredTime < now) {  
+      console.log('token expired!');
+      // clear Token
+      removeToken()
+      hydrateAuth();
+      return;
+    }
+    // update userinfo in store
+    const userInfo = {
+      email: data.user?.email,
+      display_name: data.user?.user_metadata.full_name,
+      uid: data.user.id
+    }
+    setUserInfo(userInfo);
+
+    // update token in storage
+    setToken({
+      access: data.session.access_token,
+      refresh: data.session.refresh_token,
+    })
+    // call hydrateAuth to update the store
+    hydrateAuth();
+    router.replace('/(app)');
+
+
+    // const name = data.user?.email.split('@')[0];
+    // createUserProfileIsNotExist({
+    //   email: data.user?.email,
+    //   display_name: name,
+    //   uid: data.user.id,
+    // });
+  }
+}

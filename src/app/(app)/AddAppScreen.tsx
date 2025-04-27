@@ -4,12 +4,13 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import * as z from 'zod';
 
-import { Button, ControlledInput, Text, View } from '@/components/ui';
+import { Button, ControlledInput, showErrorMessage, Text, View } from '@/components/ui';
 import { useSaveAppForm } from '@/api/supabase/use-save-app-forms';
-import { useUserInfo } from '@/store/user';
-import { Alert } from 'react-native';
+import { useUserInfo } from '@/store/user'; 
+import { showMessage } from 'react-native-flash-message';
 
 const schema = z.object({
+  app_name: z.string().min(1, 'App Name is required'),
   google_group_link: z.string().min(1, 'Google Group Link is required'),
   apk_link: z.string().min(1, 'Google Group Link is required'),
   web_link: z.string().min(1, 'Google Group Link is required'),
@@ -36,15 +37,16 @@ export default function AddAppScreen() {
     try {
       const res = await saveAppForm(formValue);
       if(res) {
-        Alert.alert('Success', 'App form saved successfully!');
+        showMessage({
+          message: 'App Info saved successfully!',  
+          type: 'success',
+        });
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'An error occurred while saving the app form.';
-      Alert.alert('Error', errorMessage);
-      // Handle error here, e.g., show a message to the user
+      showErrorMessage(errorMessage);
       return;
     }
-    
   };
 
   return (
@@ -59,13 +61,21 @@ export default function AddAppScreen() {
             testID="form-title"
             className="pb-6 text-center text-4xl font-bold"
           >
-            Add App
+            Add My App
           </Text>
 
           <Text className="mb-6 max-w-xs text-center text-gray-500">
             Please fill in the details below to add a new app.
           </Text>
         </View>
+
+        <ControlledInput
+          testID="appName"
+          control={control}
+          name="app_name"
+          label="App Name"
+          placeholder="required"
+        />
 
         <ControlledInput
           testID="googleGroupLink"
