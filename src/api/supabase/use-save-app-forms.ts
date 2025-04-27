@@ -1,5 +1,5 @@
 const TABLE_NAME = "app_forms";
-import { AppFormType } from '@/app/(app)/AddAppScreen';
+import { AppFormType } from '@/types'
 import { supabase } from '@/services/supabase';
 import type { AxiosError } from 'axios';
 import { createMutation, createQuery } from 'react-query-kit';

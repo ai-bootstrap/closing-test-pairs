@@ -1,6 +1,6 @@
-const TABLE_NAME = "submissions";
-import { AppFormType } from '@/app/(app)/AddAppScreen';
+const TABLE_NAME = "submissions"; 
 import { supabase } from '@/services/supabase';
+import { AppFormType } from '@/types';
 import type { AxiosError } from 'axios';
 import { createMutation, createQuery } from 'react-query-kit';
 

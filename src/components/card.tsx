@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { Image, Pressable, Text, View } from '@/components/ui';
-import { AppFormType } from '@/app/(app)/AddAppScreen';
 import { Linking } from 'react-native';
+import { AppFormType } from '@/types';
 
 type Props = AppFormType;
 

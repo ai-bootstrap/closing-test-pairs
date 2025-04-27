@@ -64,11 +64,11 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="AddAppScreen"
+        name="testings"
         options={{
-          title: 'AddApp',
+          title: 'Testings',
           headerShown: false,
-          tabBarIcon: ({ color }) => <AntDesign name='form' size={20} color={color} />,
+          tabBarIcon: ({ color }) => <AntDesign name='android' size={20} color={color} />,
         }}
       />
     </Tabs>

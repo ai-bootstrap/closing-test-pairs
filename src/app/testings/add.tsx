@@ -2,22 +2,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
-import * as z from 'zod';
 
 import { Button, ControlledInput, showErrorMessage, Text, View } from '@/components/ui';
 import { useSaveAppForm } from '@/api/supabase/use-save-app-forms';
 import { useUserInfo } from '@/store/user'; 
 import { showMessage } from 'react-native-flash-message';
+import { AppFormType, schema } from '@/types';
 
-const schema = z.object({
-  app_name: z.string().min(1, 'App Name is required'),
-  google_group_link: z.string().min(1, 'Google Group Link is required'),
-  apk_link: z.string().min(1, 'Google Group Link is required'),
-  web_link: z.string().min(1, 'Google Group Link is required'),
-  email: z.string().optional(),
-});
 
-export type AppFormType = z.infer<typeof schema>;
 
 export default function AddAppScreen() {
   const userInfo = useUserInfo()
