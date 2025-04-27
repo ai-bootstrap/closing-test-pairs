@@ -6,7 +6,6 @@ import * as z from 'zod';
 
 import { Button, ControlledInput, Text, View } from '@/components/ui';
 import { useSaveAppForm } from '@/api/supabase/use-save-app-forms';
-import { use } from 'i18next';
 import { useUserInfo } from '@/store/user';
 import { Alert } from 'react-native';
 
@@ -73,7 +72,7 @@ export default function AddAppScreen() {
           control={control}
           name="google_group_link"
           label="Google Group Link"
-          placeholder="Enter Google Group Link"
+          placeholder="required"
         />
 
         <ControlledInput
@@ -81,7 +80,7 @@ export default function AddAppScreen() {
           control={control}
           name="apk_link"
           label="APK Link"
-          placeholder="Enter APK Link"
+          placeholder="required"
         />
 
         <ControlledInput
@@ -89,14 +88,14 @@ export default function AddAppScreen() {
           control={control}
           name="web_link"
           label="Web Link"
-          placeholder="Enter Web Link"
+          placeholder="Required"
         />
         <ControlledInput
           testID="email"
           control={control}
           name="email"
           label="Developer Email"
-          placeholder="Enter Email"
+          placeholder="Optional"
         />
 
         <Button

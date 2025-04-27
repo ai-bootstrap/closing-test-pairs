@@ -10,6 +10,7 @@ import {
   Style as StyleIcon,
 } from '@/components/ui/icons';
 import { useAuth, useIsFirstTime } from '@/lib';
+import { Linking } from 'react-native';
 
 export default function TabLayout() {
   const status = useAuth.use.status();
@@ -28,9 +29,10 @@ export default function TabLayout() {
   if (isFirstTime) {
     return <Redirect href="/onboarding" />;
   }
-  if (status === 'signOut') {
-    return <Redirect href="/login" />;
-  }
+  // TODO: release these block before production
+  // if (status === 'signOut') {
+  //   return <Redirect href="/login" />;
+  // }
   return (
     <Tabs>
       <Tabs.Screen
@@ -75,10 +77,12 @@ export default function TabLayout() {
 
 const CreateNewPostLink = () => {
   return (
-    <Link href="/feed/add-post" asChild>
-      <Pressable>
+    // <Link href="/feed/add-post" asChild>
+      <Pressable onPress={()=>{
+        Linking.openURL('ClosingTestPairs://check')
+      }}>
         <Text className="px-3 text-primary-300">Create</Text>
       </Pressable>
-    </Link>
+    // </Link>
   );
 };
