@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expo App List UI</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f4f7fa;
+        padding: 20px;
+      }
+
+      .list-container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .list-item {
+        display: flex;
+        align-items: center;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        padding: 20px;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+
+      .list-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .item-icon {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        margin-right: 20px;
+      }
+
+      .item-content {
+        flex: 1;
+      }
+
+      .item-field {
+        margin-bottom: 10px;
+        font-size: 16px;
+        color: #333;
+      }
+
+      .item-field label {
+        font-weight: 500;
+        color: #555;
+      }
+
+      .item-links {
+        display: flex;
+        gap: 10px;
+      }
+
+      .link-btn {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        transition: background-color 0.2s;
+      }
+
+      .link-btn:hover {
+        background-color: #0056b3;
+      }
+
+      .group-btn {
+        background-color: #28a745;
+      }
+
+      .group-btn:hover {
+        background-color: #218838;
+      }
+
+      @media (max-width: 600px) {
+        .list-item {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .item-icon {
+          margin-bottom: 15px;
+          margin-right: 0;
+        }
+
+        .item-links {
+          flex-direction: column;
+          gap: 8px;
+          width: 100%;
+        }
+
+        .link-btn {
+          width: 100%;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="list-container">
+      <!-- List Item 1 -->
+      <div class="list-item">
+        <img
+          src="https://via.placeholder.com/50?text=Icon"
+          alt="App Icon"
+          class="item-icon"
+        />
+        <div class="item-content">
+          <div class="item-field">
+            <label>APK Link:</label>
+            <a href="https://example.com/apk" class="link-btn">Download APK</a>
+          </div>
+          <div class="item-field">
+            <label>Group Link:</label>
+            <a href="https://example.com/group" class="link-btn group-btn"
+              >Join Group</a
+            >
+          </div>
+          <div class="item-field"><label>Testing Days:</label> 30</div>
+          <div class="item-field"><label>Testing Users:</label> 150</div>
+        </div>
+      </div>
+
+      <!-- List Item 2 -->
+      <div class="list-item">
+        <img
+          src="https://via.placeholder.com/50?text=Icon"
+          alt="App Icon"
+          class="item-icon"
+        />
+        <div class="item-content">
+          <div class="item-field">
+            <label>APK Link:</label>
+            <a href="https://example.com/apk2" class="link-btn">Download APK</a>
+          </div>
+          <div class="item-field">
+            <label>Group Link:</label>
+            <a href="https://example.com/group2" class="link-btn group-btn"
+              >Join Group</a
+            >
+          </div>
+          <div class="item-field"><label>Testing Days:</label> 45</div>
+          <div class="item-field"><label>Testing Users:</label> 200</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

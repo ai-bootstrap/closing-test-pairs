@@ -35,7 +35,7 @@ export default function Testings() {
   }, [data]);
 
   const renderItem = React.useCallback(
-    ({ item }: { item: AppFormType }) => <TestingItem {...item} />,
+    ({ item }: { item: AppFormType }) => <TestingItem {...item} from='testings' />,
     []
   );
 

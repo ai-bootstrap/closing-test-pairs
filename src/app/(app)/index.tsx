@@ -5,11 +5,12 @@ import { Card } from '@/components/card';
 import { EmptyList, FocusAwareStatusBar, Text, View } from '@/components/ui';
 import { useAllAppForms } from '@/api/supabase/use-save-app-forms';
 import { AppFormType } from '@/types'
+import { TestingItem } from '../testings/item';
 
 export default function Feed() {
   const { data, isPending, isError } = useAllAppForms();
   const renderItem = React.useCallback(
-    ({ item }: { item: AppFormType }) => <Card {...item} />,
+    ({ item }: { item: AppFormType }) => <TestingItem {...item} from='all' />,
     []
   );
 

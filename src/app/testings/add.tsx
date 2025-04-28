@@ -107,11 +107,10 @@ export default function AddAppScreen() {
         />
 
         <ControlledInput
-          testID="webLink"
-          control={control}
+           control={control}
           name="web_link"
           label="Web Link"
-          placeholder="Required"
+          placeholder="Optional"
         />
         <ControlledInput
           testID="email"
