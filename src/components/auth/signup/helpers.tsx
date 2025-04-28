@@ -115,6 +115,8 @@ export const checkTokenAndUpdateStore = async (data: any) => {
       display_name: data.user?.user_metadata.full_name,
       uid: data.user.id
     }
+    console.log('userInfo login successful', userInfo);
+  
     setUserInfo(userInfo);
 
     // update token in storage

@@ -1,14 +1,21 @@
 import { FlashList } from '@shopify/flash-list';
 import React, { useState, useEffect } from 'react';
 import { EmptyList, FocusAwareStatusBar, Pressable, Text, View } from '@/components/ui';
-import { useAllAppForms } from '@/api/supabase/use-save-app-forms';
+import { useAppFormByUserId } from '@/api/supabase/use-save-app-forms';
 import { AppFormType } from '@/types';
 import { TestingItem } from '../testings/item';
 import { Link, Stack, useFocusEffect } from 'expo-router';
 import { ActivityIndicator } from 'react-native'; // Import ActivityIndicator for the loading spinner
+import { useUserInfo } from '@/store/user';
 
-export default function Feed() {
-  const { data, isPending, isError, refetch } = useAllAppForms();
+export default function Testings() {
+  const userInfo = useUserInfo();
+
+  console.log('userInfo111: ', userInfo);
+
+  const { data, isPending, isError, refetch, } = useAppFormByUserId({
+    variables: {uid: userInfo!.uid}
+  });
   const [items, setItems] = useState<AppFormType[]>([]);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -17,9 +24,8 @@ export default function Feed() {
   // Use useFocusEffect to refetch data when the screen comes into focus
   useFocusEffect(
     React.useCallback(() => {
-      console.log('refetching data...');
       refetch();
-    }, [refetch])
+    }, [refetch,])
   );
 
   useEffect(() => {

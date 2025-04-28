@@ -9,12 +9,16 @@ import { useUserInfo } from '@/store/user';
 import { showMessage } from 'react-native-flash-message';
 import { AppFormType, schema } from '@/types';
 import { useNavigation } from "expo-router";
+import { useAuth } from '@/lib';
 
 
 
 export default function AddAppScreen() {
   const userInfo = useUserInfo()
+  const auth = useAuth()
     const navigation = useNavigation();
+
+    console.log('userInfo111', userInfo,auth.token);
 
   const { handleSubmit, control } = useForm<AppFormType>({
     resolver: zodResolver(schema),
@@ -30,7 +34,10 @@ export default function AddAppScreen() {
   const saveApp: SubmitHandler<AppFormType> = async (formValue) => {
     console.log('formValue', formValue);
     try {
-      const res = await saveAppForm(formValue);
+      const res = await saveAppForm({
+        ...formValue,
+        creator: userInfo!.uid
+      });
       if(res) {
         showMessage({
           message: 'App Info saved successfully!',  
