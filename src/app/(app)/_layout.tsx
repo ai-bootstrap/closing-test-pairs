@@ -38,7 +38,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Feed',
+          title: 'All',
           tabBarIcon: ({ color }) => <FeedIcon color={color} />,
           headerRight: () => <CreateNewPostLink />,
           tabBarButtonTestID: 'feed-tab',
@@ -46,12 +46,11 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="style"
+        name="testings"
         options={{
-          title: 'Style',
-          headerShown: false,
-          tabBarIcon: ({ color }) => <StyleIcon color={color} />,
-          tabBarButtonTestID: 'style-tab',
+          title: 'Testings',
+          // headerShown: false,
+          tabBarIcon: ({ color }) => <AntDesign name='android' size={20} color={color} />,
         }}
       />
       <Tabs.Screen
@@ -61,14 +60,6 @@ export default function TabLayout() {
           headerShown: false,
           tabBarIcon: ({ color }) => <MaterialIcons name="settings" size={24} color="black" />,
           tabBarButtonTestID: 'settings-tab',
-        }}
-      />
-      <Tabs.Screen
-        name="testings"
-        options={{
-          title: 'Testings',
-          // headerShown: false,
-          tabBarIcon: ({ color }) => <AntDesign name='android' size={20} color={color} />,
         }}
       />
     </Tabs>
