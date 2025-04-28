@@ -32,7 +32,18 @@ export const useSaveAppForm = createMutation<boolean, AppFormType, AxiosError>({
 export const useAllAppForms = createQuery<AppFormType[], void, AxiosError>({
   queryKey: ['app_forms'],  
   fetcher: async () => {
-    const { data, error } = await supabase.from(TABLE_NAME).select('*');
+    const { data, error } = await supabase.from(TABLE_NAME).select('*').order('created_at', { ascending: false }); 
+    if (error) {
+      throw new Error('Error fetching app forms:', error);
+    }
+    return data as AppFormType[];
+  }
+});
+
+export const useAppFormByUserId = createQuery<AppFormType[], string, AxiosError>({
+  queryKey: ['app_forms_by_user_id'], 
+  fetcher: async (userId) => {
+    const { data, error } = await supabase.from(TABLE_NAME).select('*').eq('email', userId);
     if (error) {
       throw new Error('Error fetching app forms:', error);
     }

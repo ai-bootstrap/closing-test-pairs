@@ -67,7 +67,7 @@ export default function TabLayout() {
         name="testings"
         options={{
           title: 'Testings',
-          headerShown: false,
+          // headerShown: false,
           tabBarIcon: ({ color }) => <AntDesign name='android' size={20} color={color} />,
         }}
       />

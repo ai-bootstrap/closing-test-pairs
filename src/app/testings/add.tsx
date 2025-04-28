@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 
@@ -8,11 +8,14 @@ import { useSaveAppForm } from '@/api/supabase/use-save-app-forms';
 import { useUserInfo } from '@/store/user'; 
 import { showMessage } from 'react-native-flash-message';
 import { AppFormType, schema } from '@/types';
+import { useNavigation } from "expo-router";
 
 
 
 export default function AddAppScreen() {
   const userInfo = useUserInfo()
+    const navigation = useNavigation();
+
   const { handleSubmit, control } = useForm<AppFormType>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -32,7 +35,10 @@ export default function AddAppScreen() {
         showMessage({
           message: 'App Info saved successfully!',  
           type: 'success',
-        });
+          onHide() {
+            navigation.goBack(); // Navigate back to the previous screen after saving
+          },
+        })
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'An error occurred while saving the app form.';
@@ -41,7 +47,15 @@ export default function AddAppScreen() {
     }
   };
 
+  useEffect(() => {
+    // Set the header title when the component mounts
+    navigation.setOptions({
+      title: '', 
+    });
+  }, [navigation]);
+
   return (
+    <>
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior="padding"
@@ -109,5 +123,6 @@ export default function AddAppScreen() {
         />
       </View>
     </KeyboardAvoidingView>
+    </>
   );
 }

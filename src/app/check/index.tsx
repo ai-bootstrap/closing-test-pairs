@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, showErrorMessage, Text, View } from '@/components/ui';
 import useHandleDeepLink from '@/lib/hooks/use-handle-deep-link';
 import { useLocalSearchParams ,Stack} from 'expo-router';
-import { useSaveSubmissionForm } from '@/api/supabase/use-submission';
+import { useSaveSubmissionForm } from '@/api/supabase/use-tester-submission';
 import { showMessage } from 'react-native-flash-message';
 
  const CheckScreen = () => {

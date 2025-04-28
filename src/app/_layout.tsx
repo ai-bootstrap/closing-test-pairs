@@ -38,6 +38,7 @@ export default function RootLayout() {
         <Stack.Screen name="(app)" options={{ headerShown: false }} />
         <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         <Stack.Screen name="user/login_email" options={{ headerShown: false }} />
+        {/* <Stack.Screen name="testings/add" options={{ headerShown: false }} /> */}
       </Stack>
     </Providers>
   );
