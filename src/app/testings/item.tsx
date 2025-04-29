@@ -18,7 +18,7 @@ export const TestingItem = ({
   testing_users,
   app_icon,
   from = "all" // 如果是 all 頁面，display specific color
-}: Props) => {
+}: Props) => { 
   const headerColor = from === 'all' ? colors.primary[900] : colors.primary[500];
   return (
     <View className="m-2 overflow-hidden rounded-xl  border border-neutral-300 bg-white  dark:bg-neutral-900">
@@ -50,9 +50,9 @@ export const TestingItem = ({
           <Button
             label='Download APK'
             onPress={() => Linking.openURL(apk_link)} 
-            variant='secondary'
+            // variant='secondary'
             className='flex-1 mr-2'
-            backgroundColor={headerColor}
+            style={{ backgroundColor: headerColor }}
           > 
           </Button>
           <Button
