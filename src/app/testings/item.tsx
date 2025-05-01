@@ -2,13 +2,14 @@ import React from 'react';
 import { Button, colors, Image, Input, Pressable, Text, View } from '@/components/ui';
 import { Linking } from 'react-native';
 import { AppFormType } from '@/types';
-
+import AntDesign from '@expo/vector-icons/AntDesign';
 type Props = AppFormType & {
   testing_days?: number;
   testing_users?: number;
   app_icon?: string; // URL or local image reference
   from? : 'all' | 'testings'; // Specify the source of the component
-};
+  handleEdit: () => void; // Function to handle edit action
+ };
 
 export const TestingItem = ({
   app_name,
@@ -17,14 +18,21 @@ export const TestingItem = ({
   testing_days,
   testing_users,
   app_icon,
+  handleEdit,
+  id,
   from = "all" // 如果是 all 頁面，display specific color
 }: Props) => { 
   const headerColor = from === 'all' ? colors.primary[900] : colors.primary[500];
   return (
     <View className="m-2 overflow-hidden rounded-xl  border border-neutral-300 bg-white  dark:bg-neutral-900">
       {/* App Header */}
-      <View className="bg-success-500 p-4" style={{backgroundColor: headerColor}}>
+      <View className="bg-success-500 p-4 flex flex-row justify-between" style={{backgroundColor: headerColor}}>
         <Text className="text-xl font-semibold text-white">{app_name}</Text>
+        {from === 'testings' &&
+        <Pressable onPress={()=>handleEdit()}>
+          <AntDesign  name="edit" size={24} color="white" />      
+        </Pressable>
+        }
       </View>
       
       {/* App Content */}
@@ -67,3 +75,5 @@ export const TestingItem = ({
     </View>
   );
 };
+
+export default TestingItem;

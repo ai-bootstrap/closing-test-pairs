@@ -4,12 +4,14 @@ import { EmptyList, FocusAwareStatusBar, Pressable, Text, View } from '@/compone
 import { useAppFormByUserId } from '@/api/supabase/use-save-app-forms';
 import { AppFormType } from '@/types';
 import { TestingItem } from '../testings/item';
-import { Link, Stack, useFocusEffect } from 'expo-router';
+import { Link, Stack, useFocusEffect, useRouter } from 'expo-router';
 import { ActivityIndicator } from 'react-native'; // Import ActivityIndicator for the loading spinner
 import { useUserInfo } from '@/store/user';
+import { setCurrentEditingTesting } from '@/store/testings';
 
 export default function Testings() {
   const userInfo = useUserInfo();
+  const router = useRouter();
 
   console.log('userInfo111: ', userInfo);
 
@@ -34,8 +36,15 @@ export default function Testings() {
     }
   }, [data]);
 
+  function handleEdit(item: AppFormType) {
+    // Handle the edit action here, e.g., nav 
+    setCurrentEditingTesting(item)
+    console.log('item: ', item);
+    router.push(`/testings/edit/${item.id}`); // Navigate to the edit screen with the item ID
+  }
+
   const renderItem = React.useCallback(
-    ({ item }: { item: AppFormType }) => <TestingItem {...item} from='testings' />,
+    ({ item }: { item: AppFormType }) => <TestingItem handleEdit={()=>handleEdit(item)} {...item} from='testings' />,
     []
   );
 

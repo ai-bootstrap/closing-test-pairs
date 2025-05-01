@@ -3,7 +3,7 @@ import '../../global.css';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
+import { Stack, useNavigation, } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -15,8 +15,13 @@ import { APIProvider } from '@/api';
 import { hydrateAuth, loadSelectedTheme } from '@/lib';
 import { useThemeConfig } from '@/lib/use-theme-config';
 import { hydrateUserInfo } from '@/store/user';
+import * as Linking from 'expo-linking';
 
 export { ErrorBoundary } from 'expo-router';
+
+
+const prefix = Linking.createURL('/');
+
 
 export const unstable_settings = {
   initialRouteName: '(app)',
@@ -34,16 +39,20 @@ SplashScreen.setOptions({
 });
 
 export default function RootLayout() {
+  const {navigate} = useNavigation();
   return (
-    <Providers>
-      <Stack screenOptions={{  
+    <Providers> 
+
+      
+      <Stack 
+      screenOptions={{  
         headerBackground: () => <View style={{ backgroundColor: '#fff' }} />,
       }}>
-        <Stack.Screen name="(app)" options={{ headerShown: false, }}  />
+        <Stack.Screen name="(app)" options={{ headerShown: false, }} />
         <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         <Stack.Screen name="user/login_email" options={{ headerShown: false }} />
         {/* <Stack.Screen name="testings/add" options={{ headerShown: false }} /> */}
-      </Stack>
+      </Stack> 
     </Providers>
   );
 }

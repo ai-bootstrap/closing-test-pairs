@@ -9,8 +9,9 @@ import { TestingItem } from '../testings/item';
 
 export default function Feed() {
   const { data, isPending, isError } = useAllAppForms();
+
   const renderItem = React.useCallback(
-    ({ item }: { item: AppFormType }) => <TestingItem {...item} from='all' />,
+    ({ item }: { item: AppFormType }) => <TestingItem  {...item} from='all' />,
     []
   );
 

@@ -19,7 +19,7 @@ type CreateAppFormType =  AppFormType & {
   creator: string;
 }
 
-export const useSaveAppForm = createMutation<boolean, CreateAppFormType, AxiosError>({
+export const useCreateTestingApp = createMutation<boolean, CreateAppFormType, AxiosError>({
   mutationFn: async (body) => { 
     const {data} = await supabase.from(TABLE_NAME).select('*').eq('apk_link', body.apk_link).single();
     if (data) {
@@ -28,6 +28,16 @@ export const useSaveAppForm = createMutation<boolean, CreateAppFormType, AxiosEr
     const { error } = await supabase.from(TABLE_NAME).insert([body]);
     if (error) {
       throw Error('Error saving app form:', error);
+    }
+    return true
+  }
+});
+
+export const useUpdateAppForm = createMutation<boolean, AppFormType, AxiosError>({
+  mutationFn: async (body) => { 
+    const { error } = await supabase.from(TABLE_NAME).update(body).eq('id', body.id);
+    if (error) {
+      throw Error('Error updating app form:', error);
     }
     return true
   }

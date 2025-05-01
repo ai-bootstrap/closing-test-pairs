@@ -60,8 +60,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         autoVerify: true,
         data: {
           scheme: Env.SCHEME,
-          host: 'check',
-          pathPrefix: '/apps',
+          host: '*',// 
+          // pathPrefix: '/apps',
         },
         category: ['BROWSABLE', 'DEFAULT'],
       },

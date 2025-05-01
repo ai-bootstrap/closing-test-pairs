@@ -10,22 +10,20 @@ import { showMessage } from 'react-native-flash-message';
 import { AppFormType, schema } from '@/types';
 import { useNavigation } from "expo-router";
 import { useAuth } from '@/lib';
+import { useCurrentEditingTesting } from '@/store/testings';
 
 
 
-export default function AddAppScreen() {
-  const userInfo = useUserInfo()
-  const auth = useAuth()
-    const navigation = useNavigation();
-
-    console.log('userInfo111', userInfo,auth.token);
+export default function EditAppScreen() {
+  const userInfo = useUserInfo() 
+  const navigation = useNavigation(); 
+  const testingApp = useCurrentEditingTesting()
+  console.log(testingApp.id)
 
   const { handleSubmit, control } = useForm<AppFormType>({
     resolver: zodResolver(schema),
     defaultValues: {
-      google_group_link: '',
-      apk_link: '',
-      web_link: '',
+      ...testingApp,
       email: userInfo?.email || '',
     },
   }); 
@@ -74,12 +72,8 @@ export default function AddAppScreen() {
             testID="form-title"
             className="pb-6 text-center text-4xl font-bold"
           >
-            Add My App
-          </Text>
-
-          <Text className="mb-6 max-w-xs text-center text-gray-500">
-            Please fill in the details below to add a new app.
-          </Text>
+            Edit App
+          </Text> 
         </View>
 
         <ControlledInput
@@ -121,9 +115,7 @@ export default function AddAppScreen() {
         />
 
         <Button
-          testID="saveAppButton"
-          
-          label="Save App"
+          label="Update"
           loading={isPending}
           onPress={handleSubmit(saveApp)}
         />
