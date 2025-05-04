@@ -4,41 +4,42 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 
 import { Button, ControlledInput, showErrorMessage, Text, View } from '@/components/ui';
-import { useCreateTestingApp } from '@/api/supabase/use-save-app-forms';
+import { useUpdateAppForm } from '@/api/supabase/use-save-app-forms';
 import { useUserInfo } from '@/store/user'; 
 import { showMessage } from 'react-native-flash-message';
 import { AppFormType, schema } from '@/types';
 import { useNavigation } from "expo-router";
-import { useAuth } from '@/lib';
 import { useCurrentEditingTesting } from '@/store/testings';
 
 
 
 export default function EditAppScreen() {
-  const userInfo = useUserInfo() 
   const navigation = useNavigation(); 
   const testingApp = useCurrentEditingTesting()
-  console.log(testingApp.id)
+  console.log(testingApp?.id,'tapp id')
 
-  const { handleSubmit, control } = useForm<AppFormType>({
+  const { handleSubmit,control } = useForm<AppFormType>({
     resolver: zodResolver(schema),
     defaultValues: {
       ...testingApp,
-      email: userInfo?.email || '',
     },
   }); 
-  const { mutateAsync: saveAppForm, isPending } = useCreateTestingApp();   
+  const { mutateAsync: updateAppForm, isPending,error} = useUpdateAppForm();   
 
-  const saveApp: SubmitHandler<AppFormType> = async (formValue) => {
-    console.log('formValue', formValue);
+  const updateApp: SubmitHandler<AppFormType> = async (formValue) => {
+     
     try {
-      const res = await saveAppForm({
-        ...formValue,
-        creator: userInfo!.uid
-      });
+    const res = await updateAppForm({
+      app_name: formValue.app_name,
+      google_group_link: formValue.google_group_link,
+      apk_link: formValue.apk_link,
+      web_link: formValue.web_link,
+      email: formValue.email,
+      id: testingApp?.id,
+    });
       if(res) {
         showMessage({
-          message: 'App Info saved successfully!',  
+          message: 'App Info updated!',  
           type: 'success',
           onHide() {
             navigation.goBack(); // Navigate back to the previous screen after saving
@@ -72,7 +73,7 @@ export default function EditAppScreen() {
             testID="form-title"
             className="pb-6 text-center text-4xl font-bold"
           >
-            Edit App
+            Edit App {testingApp?.app_name}
           </Text> 
         </View>
 
@@ -117,8 +118,18 @@ export default function EditAppScreen() {
         <Button
           label="Update"
           loading={isPending}
-          onPress={handleSubmit(saveApp)}
-        />
+          onPress={handleSubmit(updateApp)}
+        /> 
+
+<Button
+          label="Update3"
+          loading={isPending}
+          onPress={()=>{ 
+            console.log(error)
+          }}
+        /> 
+
+        
       </View>
     </KeyboardAvoidingView>
     </>

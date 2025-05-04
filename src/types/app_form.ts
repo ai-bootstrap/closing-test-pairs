@@ -4,9 +4,10 @@ export const schema = z.object({
   google_group_link: z.string().min(1, 'Google Group Link is required'),
   apk_link: z.string().min(1, 'Google Group Link is required'),
   web_link: z.string().min(1, 'Google Group Link is required'),
-  email: z.string().optional(),
-  id: z.string().optional(),
-  created_at: z.string().optional(),
-});
+  email: z.string().optional()
+})
 
-export type AppFormType = z.infer<typeof schema>;
+export type AppFormType = z.infer<typeof schema> & {
+  id?: string;
+  created_at?: string; 
+}

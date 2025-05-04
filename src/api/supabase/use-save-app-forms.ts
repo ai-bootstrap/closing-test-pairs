@@ -37,7 +37,8 @@ export const useUpdateAppForm = createMutation<boolean, AppFormType, AxiosError>
   mutationFn: async (body) => { 
     const { error } = await supabase.from(TABLE_NAME).update(body).eq('id', body.id);
     if (error) {
-      throw Error('Error updating app form:', error);
+      console.error('Error updating app form:', error);
+      throw Error(`Error updating app form: ${error?.message}`);
     }
     return true
   }
@@ -58,8 +59,7 @@ type Variables = { uid: string };
 export const useAppFormByUserId = createQuery<AppFormType[],Variables, AxiosError>({
   queryKey: ['app_forms_by_user_id'], 
   fetcher: async ({uid}) => {
-    console.log('uid: ', uid);
-    const { data, error } = await supabase.from(TABLE_NAME).select('*').eq('creator', uid);
+    const { data, error } = await supabase.from(TABLE_NAME).select('*').eq('creator', uid).order('created_at', { ascending: false });
     if (error) {
       throw new Error('Error fetching app forms:', error);
     }
