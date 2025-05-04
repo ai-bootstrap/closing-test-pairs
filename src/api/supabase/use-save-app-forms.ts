@@ -55,6 +55,17 @@ export const useAllAppForms = createQuery<AppFormType[], void, AxiosError>({
   }
 });
 
+export const useDeleteAppForm = createMutation<boolean, string, AxiosError>({
+  mutationFn: async (id) => {   
+    const { error } = await supabase.from(TABLE_NAME).delete().eq('id', id);
+    if (error) {
+      console.error('Error deleting app form:', error);
+      throw Error(`Error deleting app form: ${error?.message}`);
+    }
+    return true
+  }
+});
+
 type Variables = { uid: string };
 export const useAppFormByUserId = createQuery<AppFormType[],Variables, AxiosError>({
   queryKey: ['app_forms_by_user_id'], 
