@@ -46,7 +46,7 @@ export default function RootLayout() {
       
       <Stack 
       screenOptions={{  
-        headerBackground: () => <View style={{ backgroundColor: '#fff' }} />,
+        headerShown: false, 
       }}>
         <Stack.Screen name="(app)" options={{ headerShown: false, }} />
         <Stack.Screen name="onboarding" options={{ headerShown: false }} />

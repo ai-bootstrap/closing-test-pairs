@@ -3,14 +3,13 @@ import { Link, Redirect, SplashScreen, Tabs } from 'expo-router';
 import React, { useCallback, useEffect } from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Pressable, SafeAreaView, Text } from '@/components/ui';
+import { Pressable, Text } from '@/components/ui';
 import {
   Feed as FeedIcon,
-  Settings as SettingsIcon,
-  Style as StyleIcon,
 } from '@/components/ui/icons';
 import { useAuth, useIsFirstTime } from '@/lib';
 import { Linking } from 'react-native';
+import Header from '@/components/Header';
 
 export default function TabLayout() {
   const status = useAuth.use.status();
@@ -26,9 +25,9 @@ export default function TabLayout() {
     }
   }, [hideSplash, status]);
 
-  if (isFirstTime) {
-    return <Redirect href="/onboarding" />;
-  }
+  // if (isFirstTime) {
+  //   return <Redirect href="/onboarding" />;
+  // }
   // TODO: release these block before production
   if (status === 'signOut') {
     return <Redirect href="/user/login" />;
@@ -36,12 +35,13 @@ export default function TabLayout() {
   return (
     <Tabs>
       <Tabs.Screen
-        name="index"
+        name="index" 
         options={{
+          header: () => <Header />,
+          headerTransparent: true,
           title: 'All',
-          tabBarIcon: ({ color }) => <FeedIcon color={color} />,
-          headerRight: () => <CreateNewPostLink />,
-          tabBarButtonTestID: 'feed-tab',
+          tabBarIcon: ({ color }) => <FeedIcon color={color} />, 
+          // tabBarButtonTestID: 'feed-tab',
         }}
       />
 
