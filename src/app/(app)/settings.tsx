@@ -15,6 +15,7 @@ import {
 } from '@/components/ui';
 import { Github, Rate, Share, Support, Website } from '@/components/ui/icons';
 import { translate, useAuth } from '@/lib';
+import { ProfileItem } from '@/components/settings/profile-item';
 
 export default function Settings() {
   const signOut = useAuth.use.signOut();
@@ -30,6 +31,10 @@ export default function Settings() {
           <Text className="text-xl font-bold">
             {translate('settings.title')}
           </Text>
+          <ItemsContainer title="settings.user">
+            <ProfileItem /> 
+          </ItemsContainer>
+
           <ItemsContainer title="settings.generale">
             <LanguageItem />
             <ThemeItem />

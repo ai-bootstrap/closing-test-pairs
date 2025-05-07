@@ -25,7 +25,7 @@ export const TestingItem = ({
   addToTesting
 }: Props) => { 
   // Solid colors instead of gradients
-  const headerColor = from === 'all' ? 'bg-amber-800' : 'bg-amber-600';
+  const headerColor = from === 'all' ? 'bg-green-300' : 'bg-amber-600';
   
   return (
     <View className="m-3 overflow-hidden rounded-2xl bg-white shadow-md shadow-neutral-300 border border-neutral-200">
@@ -92,7 +92,7 @@ export const TestingItem = ({
             <Text className="text-white font-bold text-sm">🚀 Start Testing</Text>
           </Pressable>
         ) : (
-          <View className="flex-row space-x-3">
+          <View className="flex flex-row gap-2">
             <Pressable 
               onPress={() => Linking.openURL(apk_link)}
               className="flex-1 bg-blue-500 py-3 rounded-lg items-center justify-center active:bg-blue-600"
@@ -108,53 +108,6 @@ export const TestingItem = ({
           </View>
         )}
       </View>
-    </View>
-  );
-};
-
-// List container component
-export const TestingList = () => {
-  return (
-    <View className="flex-1 bg-gray-50 p-2">
-      {/* Top filter and create button */}
-      <View className="flex-row justify-between items-center mb-4 px-2">
-        <View className="flex-row bg-white rounded-full p-1 shadow-sm border border-neutral-200">
-          <Pressable className="px-4 py-2 bg-amber-800 rounded-full">
-            <Text className="text-white font-medium">All</Text>
-          </Pressable>
-          <Pressable className="px-4 py-2">
-            <Text className="text-gray-600">Active</Text>
-          </Pressable>
-          <Pressable className="px-4 py-2">
-            <Text className="text-gray-600">Completed</Text>
-          </Pressable>
-        </View>
-        
-        <Pressable className="px-4 py-2 bg-amber-500 rounded-full shadow-sm active:bg-amber-600">
-          <Text className="text-white font-medium">✨ Create</Text>
-        </Pressable>
-      </View>
-      
-      {/* Testing items list */}
-      <TestingItem
-        app_name="but_how_are_you"
-        apk_link="222"
-        google_group_link="4422"
-        testing_days={5}
-        testing_users={12}
-        from="all"
-        addToTesting={() => console.log('Start testing')}
-      />
-      
-      <TestingItem
-        app_name="ertrewre99999"
-        apk_link="wr3wr"
-        google_group_link="wer3rw3"
-        testing_days={3}
-        testing_users={8}
-        from="all"
-        addToTesting={() => console.log('Start testing')}
-      />
     </View>
   );
 };

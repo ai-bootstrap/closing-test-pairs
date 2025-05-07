@@ -3,6 +3,7 @@
     "message": "Welcome to obytes app site"
   },
   "settings": {
+    "user": "User",
     "about": "About",
     "app_name": "App Name",
     "arabic": "Arabic",
@@ -28,6 +29,17 @@
     "title": "Settings",
     "version": "Version",
     "website": "Website"
+  },
+  "user": {
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "city": "City",
+    "country": "Country",
+    "postal_code": "Postal Code",
+    "profile_picture": "Profile Picture",
+    "profile": "Profile"
   },
   "welcome": "Welcome to obytes app site"
 }
