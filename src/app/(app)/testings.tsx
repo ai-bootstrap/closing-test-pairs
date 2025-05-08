@@ -120,10 +120,6 @@ export default function Testings() {
   const NoTestings = ()=>{
     return (
       <View>
-        <View style={{width: 260,posiition: 'relative'}} >
-          <NodataLottie />
-          <Text className='text-xl text-center w-full text-gray-700 absolute bottom-10'>You have no Apps in testing</Text>
-        </View>
         <Button onPress={()=>router.push('/testings/add')} label="Add Now"/>
       </View>
     )
@@ -139,8 +135,9 @@ export default function Testings() {
         renderItem={renderItem}
         keyExtractor={(item) => item.id!.toString()}
         ListEmptyComponent={<EmptyList 
+          message="You have no apps in testing"
           renderCustomContent={()=> <NoTestings />}
-           isLoading={isPending||isLoadingMyTestings} />}
+          isLoading={isPending||isLoadingMyTestings} />}
         estimatedItemSize={300}
         onEndReached={loadMoreData}
         onEndReachedThreshold={0.5}
