@@ -1,32 +1,82 @@
 import React from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Alert, Pressable, Text, View } from 'react-native';
 import { Linking } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { Button } from '@/components/ui';
+import { useAddToMyTestings } from '@/api/supabase/use-testings';
+import { useUserInfo } from '@/store/user';
+import { useRouter } from 'expo-router';
 
 type Props = {
+  id?: string;
   app_name: string;
   apk_link: string;
   google_group_link: string;
   testing_days?: number;
   testing_users?: number;
+  isMine?: boolean;
+  creator?: string;
   from?: 'all' | 'testings';
   handleEdit?: () => void;
-  addToTesting?: () => void;
+
 };
 
 export const TestingItem = ({
+  id,
   app_name,
   apk_link,
   google_group_link,
   testing_days = 0,
   testing_users = 0,
+  creator,
   from = "all",
   handleEdit,
-  addToTesting
 }: Props) => { 
   // Solid colors instead of gradients
   const headerColor = from === 'all' ? 'bg-green-300' : 'bg-amber-600';
+  const userInfo = useUserInfo();
+  const router = useRouter();
   
+  const {mutate: addToMyTestings, isPending: isAddingToMyTesting} = useAddToMyTestings()
+  function handleAddToTesting() {
+    Alert.alert(
+      'Add to Testing',
+      'Are you sure you want to add this app to testing?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => {
+            // Handle the action when the user confirms
+             if(!userInfo?.uid || ! id) {
+              console.log('userInfo.uid or item.id is missing') 
+              return;
+            }
+            addToMyTestings(
+              {
+                app_id: id,
+                user_id: userInfo.uid, // Assuming you have the uid in the item object
+              },
+              {
+                onSuccess: () => {
+                  router.push(`/(app)/testings`); // Navigate to the testing screen with the item ID
+                  console.log('App added to testing successfully!');
+                },
+                onError: (error) => {
+                  console.error('Error adding app to testing:', error);
+                },
+              }
+            );
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  }
+
   return (
     <View className="m-3 overflow-hidden rounded-2xl bg-white shadow-md shadow-neutral-300 border border-neutral-200">
       {/* Header with solid color */}
@@ -34,7 +84,7 @@ export const TestingItem = ({
         <Text className="text-xl font-bold text-white">
           {from === 'all' ? '🎨 ' : '🎮 '}{app_name}
         </Text>
-        {from === 'testings' && (
+        {from === 'testings' && creator === userInfo?.uid && (
           <Pressable 
             onPress={handleEdit} 
             className="p-1 bg-white/20 rounded-full"
@@ -85,13 +135,13 @@ export const TestingItem = ({
         
         {/* Action buttons */}
         {from === 'all' ? (
-          <Pressable
-            onPress={addToTesting}
-            className="w-full bg-amber-500 py-3 rounded-lg items-center justify-center active:bg-amber-600"
-          >
-            <Text className="text-white font-bold text-sm">🚀 Start Testing</Text>
-          </Pressable>
-        ) : (
+          <Button
+            loading={isAddingToMyTesting}
+            onPress={handleAddToTesting}
+            label='🚀 Start Testing'
+            className="w-full bg-amber-500 rounded-lg items-center justify-center active:bg-amber-600"
+                  />
+         ) : (
           <View className="flex flex-row gap-2">
             <Pressable 
               onPress={() => Linking.openURL(apk_link)}

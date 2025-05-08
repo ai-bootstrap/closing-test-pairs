@@ -8,6 +8,7 @@ import { Link, Stack, useFocusEffect, useRouter } from 'expo-router';
 import { ActivityIndicator, Alert } from 'react-native'; // Import ActivityIndicator for the loading spinner
 import { useUserInfo } from '@/store/user';
 import { setCurrentEditingTesting } from '@/store/testings';
+import { useGetMyTestings } from '@/api/supabase/use-testings';
 
 export default function Testings() {
   const userInfo = useUserInfo();
@@ -18,6 +19,8 @@ export default function Testings() {
   const { data, isPending, isError, refetch, } = useAppFormByUserId({
     variables: {uid: userInfo!.uid}
   });
+  const {data:myTestings, mutate: getMyTestings} = useGetMyTestings()
+
   const [items, setItems] = useState<AppFormType[]>([]);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -27,14 +30,19 @@ export default function Testings() {
   useFocusEffect(
     React.useCallback(() => {
       refetch();
-    }, [refetch,])
+      getMyTestings(userInfo!.uid)
+    }, [refetch])
   );
 
   useEffect(() => {
     if (data) {
       setItems(data);
     }
-  }, [data]);
+    if(myTestings?.length){
+      console.log('myTestings: ', myTestings);
+      setItems((prevItems) => [...prevItems, ...myTestings]);
+    }
+  }, [data,myTestings]);
 
   function handleEdit(item: AppFormType) {
     // Handle the edit action here, e.g., nav 
@@ -46,7 +54,8 @@ export default function Testings() {
   
 
   const renderItem = React.useCallback(
-    ({ item }: { item: AppFormType }) => <TestingItem  {...item} from='testings' />,
+    ({ item }: { item: AppFormType }) => <TestingItem  
+       handleEdit={()=>handleEdit(item)} {...item} from='testings' />,
     []
   );
 

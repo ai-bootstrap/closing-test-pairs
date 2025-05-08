@@ -10,4 +10,6 @@ export const schema = z.object({
 export type AppFormType = z.infer<typeof schema> & {
   id?: string;
   created_at?: string; 
+  creator?: string; // creator uid
+  testing_days?: number; // testing days
 }

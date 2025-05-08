@@ -1,4 +1,4 @@
-const TABLE_NAME = "app_forms";
+export const APP_FORM_TABLE = "app_forms";
 import { AppFormType } from '@/types'
 import { supabase } from '@/services/supabase';
 import type { AxiosError } from 'axios';
@@ -7,7 +7,7 @@ import { createMutation, createQuery } from 'react-query-kit';
 // import { useQuery, useMutation } from 'react-query'; 
 
 export const saveAppForm = async (data: any) => {
-  const { error } = await supabase.from(TABLE_NAME).insert([data]);
+  const { error } = await supabase.from(APP_FORM_TABLE).insert([data]);
   if (error) {
     console.error('Error saving app form:', error);
     return false;
@@ -21,11 +21,11 @@ type CreateAppFormType =  AppFormType & {
 
 export const useCreateTestingApp = createMutation<boolean, CreateAppFormType, AxiosError>({
   mutationFn: async (body) => { 
-    const {data} = await supabase.from(TABLE_NAME).select('*').eq('apk_link', body.apk_link).single();
+    const {data} = await supabase.from(APP_FORM_TABLE).select('*').eq('apk_link', body.apk_link).single();
     if (data) {
       throw Error('App form already exists');
     }
-    const { error } = await supabase.from(TABLE_NAME).insert([body]);
+    const { error } = await supabase.from(APP_FORM_TABLE).insert([body]);
     if (error) {
       throw Error('Error saving app form:', error);
     }
@@ -35,7 +35,7 @@ export const useCreateTestingApp = createMutation<boolean, CreateAppFormType, Ax
 
 export const useUpdateAppForm = createMutation<boolean, AppFormType, AxiosError>({
   mutationFn: async (body) => { 
-    const { error } = await supabase.from(TABLE_NAME).update(body).eq('id', body.id);
+    const { error } = await supabase.from(APP_FORM_TABLE).update(body).eq('id', body.id);
     if (error) {
       console.error('Error updating app form:', error);
       throw Error(`Error updating app form: ${error?.message}`);
@@ -47,7 +47,7 @@ export const useUpdateAppForm = createMutation<boolean, AppFormType, AxiosError>
 export const useAllAppForms = createQuery<AppFormType[], void, AxiosError>({
   queryKey: ['app_forms'],  
   fetcher: async () => {
-    const { data, error } = await supabase.from(TABLE_NAME).select('*').order('created_at', { ascending: false }); 
+    const { data, error } = await supabase.from(APP_FORM_TABLE).select('*').order('created_at', { ascending: false }); 
     if (error) {
       throw new Error('Error fetching app forms:', error);
     }
@@ -57,7 +57,7 @@ export const useAllAppForms = createQuery<AppFormType[], void, AxiosError>({
 
 export const useDeleteAppForm = createMutation<boolean, string, AxiosError>({
   mutationFn: async (id) => {   
-    const { error } = await supabase.from(TABLE_NAME).delete().eq('id', id);
+    const { error } = await supabase.from(APP_FORM_TABLE).delete().eq('id', id);
     if (error) {
       console.error('Error deleting app form:', error);
       throw Error(`Error deleting app form: ${error?.message}`);
@@ -70,7 +70,7 @@ type Variables = { uid: string };
 export const useAppFormByUserId = createQuery<AppFormType[],Variables, AxiosError>({
   queryKey: ['app_forms_by_user_id'], 
   fetcher: async ({uid}) => {
-    const { data, error } = await supabase.from(TABLE_NAME).select('*').eq('creator', uid).order('created_at', { ascending: false });
+    const { data, error } = await supabase.from(APP_FORM_TABLE).select('*').eq('creator', uid).order('created_at', { ascending: false });
     if (error) {
       throw new Error('Error fetching app forms:', error);
     }
