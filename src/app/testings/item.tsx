@@ -103,6 +103,12 @@ export const TestingItem = ({
             <Text className="text-purple-900" selectable>{apk_link}</Text>
           </View>
         </View>
+        {/* <View className="mb-4">
+          <Text className="text-sm font-medium text-purple-600 mb-1">creator</Text>
+          <View className="p-3 bg-purple-50 rounded-lg border border-purple-100">
+            <Text className="text-purple-900" selectable>{creator}</Text>
+          </View>
+        </View> */}
         
         {/* Group Link section */}
         <View className="mb-4">

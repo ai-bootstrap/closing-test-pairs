@@ -39,7 +39,6 @@ export default function Testings() {
       setItems(data);
     }
     if(myTestings?.length){
-      console.log('myTestings: ', myTestings);
       setItems((prevItems) => [...prevItems, ...myTestings]);
     }
   }, [data,myTestings]);
@@ -65,11 +64,7 @@ export default function Testings() {
     setLoadingMore(true);
     try {
       // Simulate fetching more data (you should replace this with your actual data fetching logic)
-      const newItems = await fetchMoreData(); // Replace with your actual fetch function
-      setItems((prevItems) => [...prevItems, ...newItems]);
-      if (newItems.length === 0) {
-        setHasMore(false);
-      }
+   
     } catch (error) {
       console.error('Error fetching more data:', error);
     } finally {
@@ -77,27 +72,20 @@ export default function Testings() {
     }
   };
 
-  const fetchMoreData = async () => {
-    // Simulate fetching more data
-    return new Promise<AppFormType[]>((resolve) => {
-      setTimeout(() => {
-        resolve([
-          // { id: Math.random(), name: 'New Item 1' },
-          // { id: Math.random(), name: 'New Item 2' },
-          // { id: Math.random(), name: 'New Item 3' },
-        ]);
-      }, 1000);
-    });
-  };
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
     try {
       // Refetch data
       await refetch();
+      await getMyTestings(userInfo!.uid)
+
       if(data){
         setItems(data); // Update items with the new data
       }
+      if(myTestings?.length){
+        setItems((prevItems) => [...prevItems, ...myTestings]);
+      } 
     } catch (error) {
       console.error('Error refreshing data:', error);
     } finally {

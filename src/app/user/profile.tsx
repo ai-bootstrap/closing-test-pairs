@@ -17,6 +17,9 @@ const UserProfilePage = () => {
             <Text className="text-lg font-semibold text-gray-800">
               Email: <Text className="font-normal text-gray-700">{userInfo.email}</Text>
             </Text>
+            <Text className="text-lg font-semibold text-gray-800 mt-4">
+              UID: <Text className="font-normal text-gray-700">{userInfo.uid || '--'}</Text>
+            </Text>
           </View>
         ) : (
           <View className="items-center justify-center mt-10">
@@ -27,3 +30,5 @@ const UserProfilePage = () => {
     </SafeAreaView>
   )
 }
+
+export default UserProfilePage;
