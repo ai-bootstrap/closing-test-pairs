@@ -3,8 +3,7 @@ import { AppFormType } from '@/types'
 import { supabase } from '@/services/supabase';
 import type { AxiosError } from 'axios';
 import { createMutation, createQuery } from 'react-query-kit';
-// rewrite this function with useQuery and useMutation from react-query
-// import { useQuery, useMutation } from 'react-query'; 
+import { MY_TESTINGS_TABLE } from './use-testings';
 
 export const saveAppForm = async (data: any) => {
   const { error } = await supabase.from(APP_FORM_TABLE).insert([data]);
@@ -51,7 +50,24 @@ export const useAllAppForms = createQuery<AppFormType[], void, AxiosError>({
     if (error) {
       throw new Error('Error fetching app forms:', error);
     }
-    return data as AppFormType[];
+    // get myTestings of all app forms by id
+    const { data: myTestings, error: myTestingsError } = await supabase.from(MY_TESTINGS_TABLE).select('*').in('app_id', data?.map((item) => item.id));
+    
+    // aggregate user_id by app_id
+    const appUserIdsMap:Record<string, string[]> = {}
+    myTestings?.forEach((item) => {
+      if (appUserIdsMap[item.app_id]) {
+        appUserIdsMap[item.app_id].push(item.user_id)
+      } else {
+        appUserIdsMap[item.app_id] = [item.user_id]
+      }
+    })
+
+    data.forEach((item) => {
+      item.testing_users = appUserIdsMap[item.id] || []
+    })
+
+    return data
   }
 });
 

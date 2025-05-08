@@ -3,7 +3,7 @@ import { supabase } from '@/services/supabase';
 import { AppFormType } from '@/types';
 import { AxiosError } from 'axios';
 import { createMutation } from 'react-query-kit';
-import { APP_FORM_TABLE } from './use-save-app-forms';
+import { APP_FORM_TABLE } from './use-app-forms';
 
 
 type AddToMyTestingReqType = {

@@ -6,19 +6,12 @@ import { Button } from '@/components/ui';
 import { useAddToMyTestings } from '@/api/supabase/use-testings';
 import { useUserInfo } from '@/store/user';
 import { useRouter } from 'expo-router';
+import { AppFormType } from '@/types';
+import { getDaysDifference } from '@/utils';
 
-type Props = {
-  id?: string;
-  app_name: string;
-  apk_link: string;
-  google_group_link: string;
-  testing_days?: number;
-  testing_users?: number;
-  isMine?: boolean;
-  creator?: string;
-  from?: 'all' | 'testings';
+type Props = AppFormType & {
+     from?: 'all' | 'testings';
   handleEdit?: () => void;
-
 };
 
 export const TestingItem = ({
@@ -26,9 +19,9 @@ export const TestingItem = ({
   app_name,
   apk_link,
   google_group_link,
-  testing_days = 0,
-  testing_users = 0,
+  testing_users = [],
   creator,
+  created_at,
   from = "all",
   handleEdit,
 }: Props) => { 
@@ -36,6 +29,8 @@ export const TestingItem = ({
   const headerColor = from === 'all' ? 'bg-green-300' : 'bg-amber-600';
   const userInfo = useUserInfo();
   const router = useRouter();
+
+  const alreadyInTestingByMe =  !!userInfo?.uid && testing_users.includes(userInfo?.uid)
   
   const {mutate: addToMyTestings, isPending: isAddingToMyTesting} = useAddToMyTestings()
   function handleAddToTesting() {
@@ -76,6 +71,8 @@ export const TestingItem = ({
       { cancelable: true }
     );
   }
+
+  const testing_days = getDaysDifference(created_at)
 
   return (
     <View className="m-3 overflow-hidden rounded-2xl bg-white shadow-md shadow-neutral-300 border border-neutral-200">
@@ -134,7 +131,7 @@ export const TestingItem = ({
               <Text className="text-amber-500">👥</Text>
             </View>
             <Text className="text-sm font-medium text-amber-500">
-              Testers: <Text className="font-bold">{testing_users}</Text>
+              Testers: <Text className="font-bold">{testing_users.length}</Text>
             </Text>
           </View>
         </View>
@@ -144,9 +141,10 @@ export const TestingItem = ({
           <Button
             loading={isAddingToMyTesting}
             onPress={handleAddToTesting}
-            label='🚀 Start Testing'
-            className="w-full bg-amber-500 rounded-lg items-center justify-center active:bg-amber-600"
-                  />
+            disabled={alreadyInTestingByMe}
+            label={alreadyInTestingByMe ? 'Already in testing' : '🚀 Start Testing'}
+            className="w-full rounded-lg items-center justify-center"
+          />
          ) : (
           <View className="flex flex-row gap-2">
             <Pressable 

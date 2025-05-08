@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { IUserInfo } from '@/types';
-import { createSelectors } from '@/lib/utils';
+import { createSelectors } from '@/utils';
 import { getItem, removeItem, setItem } from '@/lib/storage';
 import { signIn, signOut } from '@/lib';
 

@@ -1,7 +1,7 @@
 import { FlashList } from '@shopify/flash-list';
 import React, { useState, useEffect } from 'react';
 import { EmptyList, FocusAwareStatusBar, Pressable, Text, View } from '@/components/ui';
-import { useAppFormByUserId } from '@/api/supabase/use-save-app-forms';
+import { useAppFormByUserId } from '@/api/supabase/use-app-forms';
 import { AppFormType } from '@/types';
 import { TestingItem } from '../../components/testings/item';
 import { Link, Stack, useFocusEffect, useRouter } from 'expo-router';
@@ -13,8 +13,6 @@ import { useGetMyTestings } from '@/api/supabase/use-testings';
 export default function Testings() {
   const userInfo = useUserInfo();
   const router = useRouter();
-
-  console.log('userInfo111: ', userInfo);
 
   const { data, isPending, isError, refetch, } = useAppFormByUserId({
     variables: {uid: userInfo!.uid}

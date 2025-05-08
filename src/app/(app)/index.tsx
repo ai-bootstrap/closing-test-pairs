@@ -1,14 +1,21 @@
 import { FlashList } from '@shopify/flash-list';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
   
 import { EmptyList, FocusAwareStatusBar, Text, View } from '@/components/ui';
-import { useAllAppForms } from '@/api/supabase/use-save-app-forms';
+import { useAllAppForms, useAppFormByUserId } from '@/api/supabase/use-app-forms';
 import { AppFormType } from '@/types'
 import { TestingItem } from '../../components/testings/item';
+import { useUserInfo } from '@/store/user';
 export default function Feed() {
-  const { data, isPending, isError, refetch } = useAllAppForms();
-  const [refreshing, setRefreshing] = React.useState(false);
+  const userInfo = useUserInfo();
   
+  const {data, isPending, isError, refetch } = useAllAppForms();
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [list, setList] = useState<AppFormType[]>([]);
+  
+  const { data:myTestings,  } = useAppFormByUserId({
+      variables: {uid: userInfo!.uid}
+    });
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
     try {
@@ -22,7 +29,6 @@ export default function Feed() {
   const renderItem = React.useCallback(
     ({ item }: { item: AppFormType }) => <TestingItem  
       key={item.id}
-      id={item.id}
       {...item}  from='all' />,
     []
   );
