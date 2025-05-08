@@ -1,6 +1,6 @@
 import { FlashList } from '@shopify/flash-list';
 import React, { useState, useEffect } from 'react';
-import { EmptyList, FocusAwareStatusBar, Pressable, Text, View } from '@/components/ui';
+import { Button, EmptyList, FocusAwareStatusBar, Pressable, Text, View } from '@/components/ui';
 import { useAppFormByUserId } from '@/api/supabase/use-app-forms';
 import { AppFormType } from '@/types';
 import { TestingItem } from '../../components/testings/item';
@@ -9,6 +9,7 @@ import { ActivityIndicator, Alert } from 'react-native'; // Import ActivityIndic
 import { useUserInfo } from '@/store/user';
 import { setCurrentEditingTesting } from '@/store/testings';
 import { useGetMyTestings } from '@/api/supabase/use-testings';
+import NodataLottie from '@/components/ui/animations/lottie/nodata';
 
 export default function Testings() {
   const userInfo = useUserInfo();
@@ -116,6 +117,18 @@ export default function Testings() {
     );
   }
 
+  const NoTestings = ()=>{
+    return (
+      <View>
+        <View style={{width: 260,posiition: 'relative'}} >
+          <NodataLottie />
+          <Text className='text-xl text-center w-full text-gray-700 absolute bottom-10'>You have no Apps in testing</Text>
+        </View>
+        <Button onPress={()=>router.push('/testings/add')} label="Add Now"/>
+      </View>
+    )
+  }
+
   // Render the list of items
   return (
     <View className="flex-1">
@@ -125,7 +138,9 @@ export default function Testings() {
         data={items}
         renderItem={renderItem}
         keyExtractor={(item) => item.id!.toString()}
-        ListEmptyComponent={<EmptyList isLoading={isPending||isLoadingMyTestings} />}
+        ListEmptyComponent={<EmptyList 
+          renderCustomContent={()=> <NoTestings />}
+           isLoading={isPending||isLoadingMyTestings} />}
         estimatedItemSize={300}
         onEndReached={loadMoreData}
         onEndReachedThreshold={0.5}
