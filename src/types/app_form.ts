@@ -13,3 +13,11 @@ export type AppFormType = z.infer<typeof schema> & {
   creator?: string; // creator uid
   testing_days?: number; // testing days
 }
+
+
+export type MyTestingsItemType = {
+  id: string;  
+  app_id: string;  
+  user_id: string; 
+  created_at?: string;
+}

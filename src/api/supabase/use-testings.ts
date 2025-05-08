@@ -1,4 +1,4 @@
-const TABLE_NAME = "my_testings";
+export const MY_TESTINGS_TABLE = "my_testings";
 import { supabase } from '@/services/supabase';
 import { AppFormType } from '@/types';
 import { AxiosError } from 'axios';
@@ -15,7 +15,7 @@ export const useAddToMyTestings = createMutation<boolean, AddToMyTestingReqType,
   mutationKey: ['add-to-my-testings'],
   mutationFn: async (formValue) => {
     const { data, error } = await supabase
-      .from(TABLE_NAME)
+      .from(MY_TESTINGS_TABLE)
       .insert({
         ...formValue
       })
@@ -34,7 +34,7 @@ export const useGetMyTestings  = createMutation<AppFormType[], string, AxiosErro
   mutationKey: ['get-my-testings'],
   mutationFn: async (uid) => {
     const { data, error } = await supabase
-      .from(TABLE_NAME)
+      .from(MY_TESTINGS_TABLE)
       .select('*')
       .eq('user_id', uid)
 

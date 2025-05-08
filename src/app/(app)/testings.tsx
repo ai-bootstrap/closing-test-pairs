@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { EmptyList, FocusAwareStatusBar, Pressable, Text, View } from '@/components/ui';
 import { useAppFormByUserId } from '@/api/supabase/use-save-app-forms';
 import { AppFormType } from '@/types';
-import { TestingItem } from '../testings/item';
+import { TestingItem } from '../../components/testings/item';
 import { Link, Stack, useFocusEffect, useRouter } from 'expo-router';
 import { ActivityIndicator, Alert } from 'react-native'; // Import ActivityIndicator for the loading spinner
 import { useUserInfo } from '@/store/user';
@@ -19,7 +19,7 @@ export default function Testings() {
   const { data, isPending, isError, refetch, } = useAppFormByUserId({
     variables: {uid: userInfo!.uid}
   });
-  const {data:myTestings, mutate: getMyTestings} = useGetMyTestings()
+  const {data:myTestings, mutate: getMyTestings, isPending: isLoadingMyTestings} = useGetMyTestings()
 
   const [items, setItems] = useState<AppFormType[]>([]);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -35,13 +35,18 @@ export default function Testings() {
   );
 
   useEffect(() => {
-    if (data) {
-      setItems(data);
+    if (isPending || isLoadingMyTestings) {
+      return; // Don't update items if data is still loading
+    }
+    const res = []
+    if(data){
+      res.push(...data)
     }
     if(myTestings?.length){
-      setItems((prevItems) => [...prevItems, ...myTestings]);
+      res.push(...myTestings)
     }
-  }, [data,myTestings]);
+    setItems(res) // Update the items state with the new data
+  }, [data,myTestings, isLoadingMyTestings,isPending]);
 
   function handleEdit(item: AppFormType) {
     // Handle the edit action here, e.g., nav 
@@ -49,8 +54,6 @@ export default function Testings() {
     console.log('item: ', item);
     router.push(`/testings/edit/${item.id}`); // Navigate to the edit screen with the item ID
   }
-
-  
 
   const renderItem = React.useCallback(
     ({ item }: { item: AppFormType }) => <TestingItem  
@@ -77,15 +80,15 @@ export default function Testings() {
     setRefreshing(true);
     try {
       // Refetch data
-      await refetch();
-      await getMyTestings(userInfo!.uid)
-
+      await Promise.all([refetch(), getMyTestings(userInfo!.uid)]); // Wait for both refetch and getMyTestings to complete
+      const res = []
       if(data){
-        setItems(data); // Update items with the new data
+        res.push(...data)
       }
       if(myTestings?.length){
-        setItems((prevItems) => [...prevItems, ...myTestings]);
-      } 
+        res.push(...myTestings)
+      }
+      setItems(res) // Update the items state with the new data
     } catch (error) {
       console.error('Error refreshing data:', error);
     } finally {
@@ -124,7 +127,7 @@ export default function Testings() {
         data={items}
         renderItem={renderItem}
         keyExtractor={(item) => item.id!.toString()}
-        ListEmptyComponent={<EmptyList isLoading={isPending} />}
+        ListEmptyComponent={<EmptyList isLoading={isPending||isLoadingMyTestings} />}
         estimatedItemSize={300}
         onEndReached={loadMoreData}
         onEndReachedThreshold={0.5}
