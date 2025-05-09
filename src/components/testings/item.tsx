@@ -108,12 +108,14 @@ export const TestingItem = ({
         </View> */}
         
         {/* Group Link section */}
+        {google_group_link && 
         <View className="mb-4">
           <Text className="text-sm font-medium text-blue-600 mb-1">👥 Google Group Link</Text>
           <View className="p-3 bg-blue-50 rounded-lg border border-blue-100">
             <Text className="text-blue-900" selectable>{google_group_link}</Text>
           </View>
         </View>
+        }
         
         {/* Testing info with icons */}
         <View className="mb-5 flex-row justify-between">

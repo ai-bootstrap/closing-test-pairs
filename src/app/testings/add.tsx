@@ -11,15 +11,10 @@ import { AppFormType, schema } from '@/types';
 import { useNavigation } from "expo-router";
 import { useAuth } from '@/lib';
 
-
-
 export default function AddAppScreen() {
   const userInfo = useUserInfo()
   const auth = useAuth()
-    const navigation = useNavigation();
-
-    console.log('userInfo111', userInfo,auth.token);
-
+  const navigation = useNavigation();
   const { handleSubmit, control } = useForm<AppFormType>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -62,7 +57,7 @@ export default function AddAppScreen() {
   }, [navigation]);
 
   return (
-    <>
+    <View className='flex-1 h-full'>
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior="padding"
@@ -95,7 +90,7 @@ export default function AddAppScreen() {
           control={control}
           name="google_group_link"
           label="Google Group Link"
-          placeholder="required"
+          placeholder="Optional"
         />
 
         <ControlledInput
@@ -129,6 +124,6 @@ export default function AddAppScreen() {
         />
       </View>
     </KeyboardAvoidingView>
-    </>
+    </View>
   );
 }

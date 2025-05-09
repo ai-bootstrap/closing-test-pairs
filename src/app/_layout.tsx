@@ -42,8 +42,6 @@ export default function RootLayout() {
   const {navigate} = useNavigation();
   return (
     <Providers> 
-
-      
       <Stack 
       screenOptions={{  
         headerShown: false, 
