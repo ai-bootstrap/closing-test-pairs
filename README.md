@@ -51,3 +51,6 @@ pnpm android
 ### Supabase
 
 database password: CkMiW1k4XrGRbzCT
+
+### Release
+android keystone secret: !2sdlfe&sU9_&3

@@ -5,6 +5,7 @@ import { useColorScheme } from 'nativewind';
 import { Item } from '@/components/settings/item';
 import { ItemsContainer } from '@/components/settings/items-container';
 import { LanguageItem } from '@/components/settings/language-item';
+import { ProfileItem } from '@/components/settings/profile-item';
 import { ThemeItem } from '@/components/settings/theme-item';
 import {
   colors,
@@ -15,7 +16,6 @@ import {
 } from '@/components/ui';
 import { Github, Rate, Share, Support, Website } from '@/components/ui/icons';
 import { translate, useAuth } from '@/lib';
-import { ProfileItem } from '@/components/settings/profile-item';
 
 export default function Settings() {
   const signOut = useAuth.use.signOut();
@@ -32,7 +32,7 @@ export default function Settings() {
             {translate('settings.title')}
           </Text>
           <ItemsContainer title="settings.user">
-            <ProfileItem /> 
+            <ProfileItem />
           </ItemsContainer>
 
           <ItemsContainer title="settings.generale">

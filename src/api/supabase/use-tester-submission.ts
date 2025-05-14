@@ -1,38 +1,43 @@
-const TABLE_NAME = "submissions"; 
-import { supabase } from '@/services/supabase';
-import { AppFormType } from '@/types';
 import type { AxiosError } from 'axios';
 import { createMutation, createQuery } from 'react-query-kit';
 
+import { supabase } from '@/services/supabase';
+import { type AppFormType } from '@/types';
+const TABLE_NAME = 'submissions';
 
 export type SubmissionFormReqType = {
   email: string;
   app_name: string;
   // tester: string;
-}
+};
 
 export type SubmissionFormType = SubmissionFormReqType & {
   id: number;
   created_at: string;
-}
+};
 
-
-export const useSubmissions = createQuery<SubmissionFormType[], AppFormType, AxiosError>({
+export const useSubmissions = createQuery<
+  SubmissionFormType[],
+  AppFormType,
+  AxiosError
+>({
   queryKey: ['submission'],
   fetcher: async (formValue) => {
-    const { data, error } = await supabase
-      .from(TABLE_NAME)
-      .select('*')
+    const { data, error } = await supabase.from(TABLE_NAME).select('*');
 
     if (error) {
       throw new Error(error.message);
     }
 
     return data as SubmissionFormType[];
-  }
+  },
 });
 
-export const useSaveSubmissionForm = createMutation<SubmissionFormType, SubmissionFormReqType, AxiosError>({
+export const useSaveSubmissionForm = createMutation<
+  SubmissionFormType,
+  SubmissionFormReqType,
+  AxiosError
+>({
   mutationKey: ['save-submission'],
   mutationFn: async (formValue) => {
     const { data, error } = await supabase
@@ -43,7 +48,7 @@ export const useSaveSubmissionForm = createMutation<SubmissionFormType, Submissi
         // tester: formValue.tester,
       })
       .select('*')
-      .single()
+      .single();
 
     if (error) {
       throw new Error(error.message);
@@ -52,4 +57,3 @@ export const useSaveSubmissionForm = createMutation<SubmissionFormType, Submissi
     return data as SubmissionFormType;
   },
 });
-

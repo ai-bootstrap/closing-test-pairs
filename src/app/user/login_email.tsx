@@ -1,11 +1,10 @@
-import { Stack, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import React from 'react';
 
 import type { LoginFormProps } from '@/components/login-form';
 import { LoginForm } from '@/components/login-form';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { useAuth } from '@/lib';
-import { SignUpSelectors } from '@/components/auth/signup';
 
 export default function Login() {
   const router = useRouter();
@@ -17,10 +16,9 @@ export default function Login() {
     router.push('/');
   };
   return (
-    <> 
+    <>
       <FocusAwareStatusBar />
       <LoginForm onSubmit={onSubmit} />
- 
     </>
   );
 }

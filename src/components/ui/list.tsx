@@ -3,37 +3,37 @@ import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 
-import { Text } from './text';
 import NodataLottie from './animations/lottie/nodata';
+import { Text } from './text';
 type Props = {
   isLoading: boolean;
-  message?:string
-  renderCustomContent?: () => React.ReactNode
+  message?: string;
+  renderCustomContent?: () => React.ReactNode;
 };
 
 export const List = NFlashList;
 
-export const EmptyList = React.memo(({ isLoading, renderCustomContent,message }: Props) => {
-  return (
-    <View className="min-h-[400px] flex-1 items-center justify-center">
-      {!isLoading ? (
+export const EmptyList = React.memo(
+  ({ isLoading, renderCustomContent, message }: Props) => {
+    return (
+      <View className="min-h-[400px] flex-1 items-center justify-center">
+        {!isLoading ? (
           <View>
-            <View style={{width: 260,position: 'relative'}} >
+            <View style={{ width: 260, position: 'relative' }}>
               <NodataLottie />
-              <Text className='text-xl text-center w-full text-gray-700 absolute bottom-10'>
+              <Text className="absolute bottom-10 w-full text-center text-xl text-gray-700">
                 {message ?? 'Sorry! No data found'}
-                
               </Text>
             </View>
-            {renderCustomContent && renderCustomContent() }
+            {renderCustomContent && renderCustomContent()}
           </View>
-        
-      ) : (
-        <ActivityIndicator />
-      )}
-    </View>
-  );
-});
+        ) : (
+          <ActivityIndicator />
+        )}
+      </View>
+    );
+  }
+);
 
 export const NoData = () => (
   <Svg width={200} height={200} viewBox="0 0 647.636 632.174">

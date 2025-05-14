@@ -13,9 +13,9 @@ module.exports = {
       },
       colors,
       backgroundImage: {
-      'gradient-to-r': 'linear-gradient(to right, var(--tw-gradient-stops))',
+        'gradient-to-r': 'linear-gradient(to right, var(--tw-gradient-stops))',
+      },
     },
-     },
   },
   plugins: [],
 };

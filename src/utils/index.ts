@@ -1,6 +1,6 @@
 import { Linking } from 'react-native';
 import type { StoreApi, UseBoundStore } from 'zustand';
-export * from "./time"
+export * from './time';
 
 export function openLinkInBrowser(url: string) {
   Linking.canOpenURL(url).then((canOpen) => canOpen && Linking.openURL(url));

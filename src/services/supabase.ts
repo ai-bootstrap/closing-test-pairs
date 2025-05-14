@@ -1,8 +1,9 @@
-import { Env } from '@/lib/env';
-import storage from '@/lib/storage';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import { AppState } from 'react-native';
+
+import { Env } from '@/lib/env';
+import storage from '@/lib/storage';
 
 export const supabase = createClient(Env.SUPABASE_URL, Env.SUPABASE_ANON_KEY, {
   auth: {

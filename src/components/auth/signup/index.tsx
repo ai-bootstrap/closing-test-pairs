@@ -5,9 +5,9 @@ import { Alert } from 'react-native';
 
 import Google from '@/components/auth/google';
 import { Checkbox, Pressable, Text, View } from '@/components/ui';
+import LinkWrapper from '@/components/ui/LinkWrapper';
 
 import { useAppleSignIn, useGoogleSignIn } from './helpers';
-import LinkWrapper from '@/components/ui/LinkWrapper';
 
 export const SignUpSelectors = () => {
   const [agree, setAgree] = useState(false);
@@ -59,15 +59,12 @@ export const SignUpSelectors = () => {
     callGoogleSignIn();
   }
 
-  async function onPressMask(){
+  async function onPressMask() {
     router.push('/(app)');
   }
   return (
     <View className="my-6 flex w-4/5 flex-col justify-center align-middle">
-
-      <Pressable
-        onPress={onPressGoogle}
-      >
+      <Pressable onPress={onPressGoogle}>
         <View className="my-4 flex flex-row justify-center rounded rounded-s bg-black align-middle">
           <View className="flex w-full flex-row items-center">
             <Google />
@@ -94,10 +91,7 @@ export const SignUpSelectors = () => {
         </View>
       </Pressable>
 
-      <Pressable
-        onPress={onPressMask}
-        className='mt-4'
-      >
+      <Pressable onPress={onPressMask} className="mt-4">
         <View className="flex flex-row justify-center rounded rounded-s bg-black align-middle">
           <View className="flex w-full flex-row items-center  ">
             <View className="m-1 flex h-[44] w-12 flex-row items-center justify-center rounded rounded-s bg-white">

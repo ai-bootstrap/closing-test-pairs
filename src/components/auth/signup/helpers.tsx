@@ -4,12 +4,11 @@ import {
 } from '@react-native-google-signin/google-signin';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { router } from 'expo-router';
-
-import { createUserProfileIsNotExist } from '@/api/supabase/user/profile';
-import { supabase } from '@/services/supabase';
-import { hydrateAuth } from '@/lib';
 import { Alert } from 'react-native';
+
+import { hydrateAuth } from '@/lib';
 import { removeToken, setToken } from '@/lib/auth/utils';
+import { supabase } from '@/services/supabase';
 import { setUserInfo } from '@/store/user';
 
 export const useAppleSignIn = () => {
@@ -51,7 +50,6 @@ export const useAppleSignIn = () => {
 
 export const useGoogleSignIn = () => {
   return async () => {
-    
     GoogleSignin.configure({
       scopes: [], // what API you want to access on behalf of the user, default is email and profile
       // ios Only
@@ -66,7 +64,7 @@ export const useGoogleSignIn = () => {
       const signResp = await GoogleSignin.signIn();
 
       if (signResp.type === 'success') {
-        const  userInfo = signResp.data
+        const userInfo = signResp.data;
         if (userInfo.idToken) {
           const { data, error } = await supabase.auth.signInWithIdToken({
             provider: 'google',
@@ -75,12 +73,11 @@ export const useGoogleSignIn = () => {
 
           // judge if the expired time is less than now
           // I want to use the logic in several places, so I put it in a function
-          checkTokenAndUpdateStore(data);  
+          checkTokenAndUpdateStore(data);
         } else {
           throw new Error('no ID token present!');
         }
       }
-      
     } catch (error: any) {
       Alert.alert('Google Sign In', JSON.stringify(error));
 
@@ -98,14 +95,14 @@ export const useGoogleSignIn = () => {
   };
 };
 
-export const checkTokenAndUpdateStore = async (data: any) => { 
+export const checkTokenAndUpdateStore = async (data: any) => {
   if (data.session?.access_token && data.session?.expires_at) {
-    const expiredTime = new Date(data.session.expires_at * 1000); 
+    const expiredTime = new Date(data.session.expires_at * 1000);
     const now = new Date();
-    if (expiredTime < now) {  
+    if (expiredTime < now) {
       console.log('token expired!');
       // clear Token
-      removeToken()
+      removeToken();
       hydrateAuth();
       return;
     }
@@ -113,21 +110,20 @@ export const checkTokenAndUpdateStore = async (data: any) => {
     const userInfo = {
       email: data.user?.email,
       display_name: data.user?.user_metadata.full_name,
-      uid: data.user.id
-    }
+      uid: data.user.id,
+    };
     console.log('userInfo login successful', userInfo);
-  
+
     setUserInfo(userInfo);
 
     // update token in storage
     setToken({
       access: data.session.access_token,
       refresh: data.session.refresh_token,
-    })
+    });
     // call hydrateAuth to update the store
     hydrateAuth();
     router.replace('/(app)');
-
 
     // const name = data.user?.email.split('@')[0];
     // createUserProfileIsNotExist({
@@ -136,4 +132,4 @@ export const checkTokenAndUpdateStore = async (data: any) => {
     //   uid: data.user.id,
     // });
   }
-}
+};
