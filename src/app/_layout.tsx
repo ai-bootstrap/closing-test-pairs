@@ -42,7 +42,7 @@ export default function RootLayout() {
     <Providers>
       <Stack
         screenOptions={{
-          headerShown: true,
+          headerShown: false,
         }}
       >
         <Stack.Screen name="(app)" options={{ headerShown: false }} />

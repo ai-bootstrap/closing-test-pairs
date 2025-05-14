@@ -85,6 +85,7 @@ const client = z.object({
   VAR_BOOL: z.boolean(),
   SUPABASE_URL: z.string(),
   SUPABASE_ANON_KEY: z.string(),
+  SUPABASE_BUCKET_NAME: z.string(),
 });
 
 const buildTime = z.object({
@@ -111,6 +112,7 @@ const _clientEnv = {
   VAR_BOOL: process.env.VAR_BOOL === 'true',
   SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
   SUPABASE_URL: process.env.SUPABASE_URL,
+  SUPABASE_BUCKET_NAME: process.env.SUPABASE_BUCKET_NAME,
 };
 
 /**

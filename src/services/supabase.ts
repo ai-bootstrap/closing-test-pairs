@@ -1,9 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
+import * as FileSystem from 'expo-file-system';
 import { AppState } from 'react-native';
 
+import { SUPABASE_BUCKET_NAME } from '@/constants';
 import { Env } from '@/lib/env';
 import storage from '@/lib/storage';
+import { getMD5Hash } from '@/utils/crypto';
 
 export const supabase = createClient(Env.SUPABASE_URL, Env.SUPABASE_ANON_KEY, {
   auth: {
@@ -27,43 +30,62 @@ AppState.addEventListener('change', (state) => {
   }
 });
 
+type UploadResult = {
+  path: string;
+  publicURL: string;
+} | null;
+
 export const uploadFileToSupabaseByUri = async (
-  fileUri,
-  bucket,
-  contentType
-) => {
+  fileUri: string,
+  bucket: string,
+  contentType: string,
+  originalFilename?: string
+): Promise<UploadResult> => {
   try {
-    const filename = `${Date.now()}.${contentType.split('/')[1]}`;
-    // 获取文件信息
+    // 1. Validate file exists
     const fileInfo = await FileSystem.getInfoAsync(fileUri);
     if (!fileInfo.exists) {
-      console.error('文件不存在');
-      return null;
+      throw new Error(`File not found at URI: ${fileUri}`);
     }
 
+    // 2. Generate filename preserving original extension when possible
+    const fileInfoArr = originalFilename?.split('.') || [];
+    const fileExtension =
+      fileInfoArr[fileInfoArr.length - 1] || contentType.split('/')[1] || 'bin';
+    const fileRawName = fileInfoArr[0];
+    const md5 = await getMD5Hash(fileUri)
+    const filename = `/audit/${fileRawName}_${md5}.${fileExtension}`; // audit is folder
+
+    // 3. Create FormData with proper file metadata
     const formData = new FormData();
     formData.append('file', {
       uri: fileUri,
-      name: 'audio-file.m4a',
-      type: 'audio/m4a',
-    });
+      name: filename,
+      type: contentType,
+    } as any); // Type assertion for React Native FormData
 
-    // 上传文件到 Supabase
+    // 4. Upload to Supabase
     const { data, error } = await supabase.storage
       .from(bucket)
       .upload(filename, formData);
 
-    if (error) {
-      console.error('上传失败', error);
-      return null;
+    if (error || !data) {
+      throw error || new Error('Upload failed: No data returned');
     }
 
-    const publicURL = await getPublicURL(data.path, bucket);
-    console.log('文件上传成功', data, publicURL);
+    // 5. Get public URL
+    const publicUrl = await getPublicURL(data.path, bucket);
+    if (!publicUrl) {
+      throw new Error('Failed to generate public URL');
+    }
 
-    return { data, publicURL };
+    return {
+      path: data.path,
+      publicURL: publicUrl,
+    };
   } catch (error) {
-    console.log(error, 'error uploading to supabase');
+    console.error(`Upload failed for ${fileUri}:`, error);
+    throw error; // Re-throw to allow caller to handle
   }
 };
 

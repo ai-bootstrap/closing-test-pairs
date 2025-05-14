@@ -8,6 +8,7 @@ const TABLE_NAME = 'submissions';
 export type SubmissionFormReqType = {
   email: string;
   app_name: string;
+  screen_shot: string;
   // tester: string;
 };
 
@@ -22,7 +23,7 @@ export const useSubmissions = createQuery<
   AxiosError
 >({
   queryKey: ['submission'],
-  fetcher: async (formValue) => {
+  fetcher: async () => {
     const { data, error } = await supabase.from(TABLE_NAME).select('*');
 
     if (error) {
@@ -45,6 +46,7 @@ export const useSaveSubmissionForm = createMutation<
       .insert({
         email: formValue.email,
         app_name: formValue.app_name,
+        screen_shot: formValue.screen_shot,
         // tester: formValue.tester,
       })
       .select('*')
