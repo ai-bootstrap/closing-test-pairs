@@ -26,6 +26,7 @@ import {
 } from './helpers';
 
 export const AuthComp = () => {
+  const [mode, setMode] = useState<'SignIn' | 'SignUp'>("SignIn")
   const { handleSubmit, control, getValues, setValue } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
@@ -128,6 +129,10 @@ export const AuthComp = () => {
     router.push('/(app)');
   }
 
+  async function handleSignUp(){
+    Alert.alert("Please continue with Google", "this page is under building")
+  }
+
   return (
     <View className="flex-1 justify-center bg-gray-50 p-6">
       {/* Header */}
@@ -219,7 +224,7 @@ export const AuthComp = () => {
             </Pressable>
 
             {/* Apple Button */}
-            <Pressable
+            {/* <Pressable
               onPress={onPressApple}
               className="ml-4 h-14 flex-1 items-center justify-center rounded-xl bg-black active:bg-gray-800"
             >
@@ -227,7 +232,7 @@ export const AuthComp = () => {
                 <FontAwesome name="apple" size={20} color="white" />
                 <Text className="ml-2 font-medium text-white">Apple</Text>
               </View>
-            </Pressable>
+            </Pressable> */}
           </View>
 
           {/* Guest Access Section - Non-button version */}
@@ -238,10 +243,6 @@ export const AuthComp = () => {
                 Continue as Guest
               </Text>
             </Pressable>
-
-            {/* <Text className="mt-1 text-center text-xs text-gray-400">
-    Explore basic features without an account
-  </Text> */}
           </View>
         </View>
 
@@ -268,7 +269,7 @@ export const AuthComp = () => {
         {/* Sign up link */}
         <View className="mt-4 flex-row justify-center">
           <Text className="text-sm text-gray-500">Don't have an account? </Text>
-          <Pressable onPress={() => router.push('/signup')}>
+          <Pressable onPress={handleSignUp}>
             <Text className="text-sm font-medium text-indigo-600">Sign up</Text>
           </Pressable>
         </View>

@@ -43,6 +43,7 @@ export type LoginFormProps = {
   onSubmit?: SubmitHandler<FormType>;
 };
 
+// eslint-disable-next-line max-lines-per-function
 export const LoginForm = ({}: LoginFormProps) => {
   const { handleSubmit, control, getValues, setValue } = useForm<FormType>({
     resolver: zodResolver(schema),

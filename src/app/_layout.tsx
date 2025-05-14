@@ -69,7 +69,7 @@ function Providers({ children }: { children: React.ReactNode }) {
           <APIProvider>
             <BottomSheetModalProvider>
               {children}
-              <FlashMessage position="bottom" />
+              <FlashMessage position="top" />
             </BottomSheetModalProvider>
           </APIProvider>
         </ThemeProvider>
