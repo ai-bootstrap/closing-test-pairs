@@ -37,7 +37,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   subtitle = 'Select an image to upload',
   disabled = false,
 }) => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const getMimeType = (uri: string, fileName?: string): string => {
@@ -72,14 +72,14 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
       });
 
       if (!result.canceled && result.assets && result.assets.length > 0) {
-        const asset = result.assets[0];
+        const asset: any = result.assets[0];
         setSelectedImage(asset.uri);
 
         // Get proper MIME type
         const mimeType = getMimeType(asset.uri, asset.fileName);
 
         // Get file size
-        const fileInfo = await FileSystem.getInfoAsync(asset.uri);
+        const fileInfo: any = await FileSystem.getInfoAsync(asset.uri);
         const fileSize = fileInfo.size || 0;
 
         onFileSelected({
@@ -108,7 +108,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
       {selectedImage ? (
         <View className="relative">
           <Image
-            source={{ uri: selectedImage }}
+            source={{ uri: selectedImage as unknown as string }}
             className="h-64 w-full rounded-lg"
             resizeMode="contain"
           />

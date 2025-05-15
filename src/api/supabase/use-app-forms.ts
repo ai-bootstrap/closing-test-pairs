@@ -2,10 +2,9 @@ import type { AxiosError } from 'axios';
 import { createMutation, createQuery } from 'react-query-kit';
 
 import { supabase } from '@/services/supabase';
-import { type AppFormType } from '@/types';
+import { type AppFormRequestType, type AppFormType } from '@/types';
 
-import { MY_TESTINGS_TABLE } from './use-testings';
-export const APP_FORM_TABLE = 'app_forms';
+import { APP_FORM_TABLE, MY_TESTINGS_TABLE } from './tables';
 
 export const saveAppForm = async (data: any) => {
   const { error } = await supabase.from(APP_FORM_TABLE).insert([data]);
@@ -16,13 +15,9 @@ export const saveAppForm = async (data: any) => {
   return true;
 };
 
-type CreateAppFormType = AppFormType & {
-  creator: string;
-};
-
 export const useCreateTestingApp = createMutation<
   boolean,
-  CreateAppFormType,
+  AppFormRequestType,
   AxiosError
 >({
   mutationFn: async (body) => {
@@ -44,7 +39,7 @@ export const useCreateTestingApp = createMutation<
 
 export const useUpdateAppForm = createMutation<
   boolean,
-  AppFormType,
+  AppFormRequestType,
   AxiosError
 >({
   mutationFn: async (body) => {
@@ -71,7 +66,7 @@ export const useAllAppForms = createQuery<AppFormType[], void, AxiosError>({
       throw new Error('Error fetching app forms:', error);
     }
     // get myTestings of all app forms by id
-    const { data: myTestings, error: myTestingsError } = await supabase
+    const { data: myTestings } = await supabase
       .from(MY_TESTINGS_TABLE)
       .select('*')
       .in(

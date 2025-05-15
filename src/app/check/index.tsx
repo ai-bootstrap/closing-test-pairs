@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { showMessage } from 'react-native-flash-message';
 import { z } from 'zod';
 
-import { useSaveSubmissionForm } from '@/api/supabase/use-tester-submission';
+import { useSaveSubmissionForm } from '@/api/supabase/use-proof-submission';
 import { FileUploader } from '@/components/file-uploader';
 import {
   Button,
@@ -23,6 +23,7 @@ import { uploadFileToSupabaseByUri } from '@/services/supabase';
 const formSchema = z.object({
   email: z.string().email('Please enter a valid email'),
   appName: z.string().min(1, 'App name is required'),
+  app_id: z.string().min(1, 'App ID is required'),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -37,9 +38,10 @@ const CheckScreen = () => {
   } | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
-  const { email, appname } = useLocalSearchParams<{
+  const { email, appname, app_id } = useLocalSearchParams<{
     email?: string;
     appname?: string;
+    app_id: string;
   }>();
 
   const {
@@ -51,6 +53,7 @@ const CheckScreen = () => {
     defaultValues: {
       email: email || '',
       appName: appname || '',
+      app_id: app_id || '',
     },
   });
 
@@ -86,8 +89,9 @@ const CheckScreen = () => {
       saveSubmission(
         {
           email: data.email,
-          app_name: data.appName,
+          // app_name: data.appName,
           screen_shot: uploadResult.path,
+          app_id: app_id,
         },
         {
           onSuccess: () => {
@@ -136,6 +140,13 @@ const CheckScreen = () => {
             label="App Tested"
             placeholder="Name of the app you tested"
             error={errors.appName?.message}
+          />
+          <ControlledInput
+            control={control}
+            name="app_id"
+            label="App Id"
+            placeholder="Id of the app you tested"
+            error={errors.app_id?.message}
           />
 
           <View>

@@ -4,8 +4,7 @@ import { createMutation } from 'react-query-kit';
 import { supabase } from '@/services/supabase';
 import { type AppFormType } from '@/types';
 
-import { APP_FORM_TABLE } from './use-app-forms';
-export const MY_TESTINGS_TABLE = 'my_testings';
+import { APP_FORM_TABLE, MY_TESTINGS_TABLE } from './tables';
 
 type AddToMyTestingReqType = {
   app_id: string; // app 的 id
@@ -19,7 +18,7 @@ export const useAddToMyTestings = createMutation<
 >({
   mutationKey: ['add-to-my-testings'],
   mutationFn: async (formValue) => {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from(MY_TESTINGS_TABLE)
       .insert({
         ...formValue,

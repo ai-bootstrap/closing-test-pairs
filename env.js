@@ -86,6 +86,9 @@ const client = z.object({
   SUPABASE_URL: z.string(),
   SUPABASE_ANON_KEY: z.string(),
   SUPABASE_BUCKET_NAME: z.string(),
+
+  GOOGLE_AD_APP_ID: z.string().optional(),
+  GOOGLE_AD_BANNER_ID: z.string().optional(),
 });
 
 const buildTime = z.object({
@@ -113,6 +116,9 @@ const _clientEnv = {
   SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
   SUPABASE_URL: process.env.SUPABASE_URL,
   SUPABASE_BUCKET_NAME: process.env.SUPABASE_BUCKET_NAME,
+
+  GOOGLE_AD_APP_ID: process.env.GOOGLE_AD_APP_ID,
+  GOOGLE_AD_BANNER_ID: process.env.GOOGLE_AD_BANNER_ID,
 };
 
 /**

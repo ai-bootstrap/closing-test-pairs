@@ -1,5 +1,6 @@
+import { Feather } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import React from 'react';
 import { Alert, Pressable, Text, View } from 'react-native';
 import { Linking } from 'react-native';
@@ -142,14 +143,19 @@ export const TestingItem = ({
             </Text>
           </View>
 
-          <View className="flex-row items-center">
-            <View className="mr-2 size-6 items-center justify-center rounded-full bg-amber-100">
-              <Text className="text-amber-500">👥</Text>
+          <Link href={`/testings/detail/${id}`}>
+            <View className="flex-row items-center">
+              <View className="mr-2 size-6 items-center justify-center rounded-full bg-amber-100">
+                <Text className="text-amber-500">👥</Text>
+              </View>
+              <Text className="text-sm font-medium text-amber-500">
+                Testers:{' '}
+                <Text className="font-bold">{testing_users.length}</Text>
+              </Text>
+
+              <Feather name="chevron-right" size={24} color="gray" />
             </View>
-            <Text className="text-sm font-medium text-amber-500">
-              Testers: <Text className="font-bold">{testing_users.length}</Text>
-            </Text>
-          </View>
+          </Link>
         </View>
 
         {/* Action buttons */}
@@ -187,7 +193,7 @@ export const TestingItem = ({
           <Button
             onPress={() => {
               router.push(
-                `/check?email=${userInfo?.email}&appname=${app_name}`
+                `/check?email=${userInfo?.email}&appname=${app_name}&app_id=${id}`
               );
             }}
             variant="outline"

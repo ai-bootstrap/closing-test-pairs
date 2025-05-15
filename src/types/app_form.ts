@@ -7,13 +7,17 @@ export const schema = z.object({
   email: z.string().optional(),
 });
 
-export type AppFormType = z.infer<typeof schema> & {
+export type AppForm = z.infer<typeof schema>;
+
+export type AppFormType = AppForm & {
   id: string;
   created_at: string;
   creator: string; // creator uid
   testing_days?: number; // testing days
   testing_users?: string[];
 };
+
+export type AppFormRequestType = Partial<AppFormType>;
 
 export type MyTestingsItemType = {
   id: string;

@@ -31,7 +31,7 @@ export default function EditAppScreen() {
       ...testingApp,
     },
   });
-  const { mutateAsync: updateAppForm, isPending, error } = useUpdateAppForm();
+  const { mutateAsync: updateAppForm, isPending } = useUpdateAppForm();
 
   const updateApp: SubmitHandler<AppFormType> = async (formValue) => {
     try {
@@ -41,7 +41,7 @@ export default function EditAppScreen() {
         apk_link: formValue.apk_link,
         web_link: formValue.web_link,
         email: formValue.email,
-        id: testingApp?.id,
+        id: testingApp?.id as string,
       });
       if (res) {
         showMessage({

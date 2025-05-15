@@ -39,11 +39,11 @@ export const useAppleSignIn = () => {
         throw new Error('No identityToken.');
       }
     } catch (e) {
-      if (e.code === 'ERR_REQUEST_CANCELED') {
-        // handle that the user canceled the sign-in flow
-      } else {
-        // handle other errors
-      }
+      // if (e?.code === 'ERR_REQUEST_CANCELED') {
+      //   // handle that the user canceled the sign-in flow
+      // } else {
+      //   // handle other errors
+      // }
     }
   };
 };
@@ -66,7 +66,7 @@ export const useGoogleSignIn = () => {
       if (signResp.type === 'success') {
         const userInfo = signResp.data;
         if (userInfo.idToken) {
-          const { data, error } = await supabase.auth.signInWithIdToken({
+          const { data } = await supabase.auth.signInWithIdToken({
             provider: 'google',
             token: userInfo.idToken,
           });

@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
+import dayjs from 'dayjs';
 import * as FileSystem from 'expo-file-system';
 import { AppState } from 'react-native';
 
@@ -53,8 +54,8 @@ export const uploadFileToSupabaseByUri = async (
     const fileExtension =
       fileInfoArr[fileInfoArr.length - 1] || contentType.split('/')[1] || 'bin';
     const fileRawName = fileInfoArr[0];
-    const md5 = await getMD5Hash(fileUri)
-    const filename = `/audit/${fileRawName}_${md5}.${fileExtension}`; // audit is folder
+    const md5 = await getMD5Hash(fileUri);
+    const filename = `/audit/${fileRawName}_${md5}_${dayjs().toISOString()}.${fileExtension}`; // audit is folder
 
     // 3. Create FormData with proper file metadata
     const formData = new FormData();
@@ -91,10 +92,10 @@ export const uploadFileToSupabaseByUri = async (
 
 export async function getPublicURL(dataPath: string, bucket: string) {
   // 获取文件的公共链接
-  const data = supabase.storage.from(bucket).getPublicUrl(dataPath);
+  const resp = supabase.storage.from(bucket).getPublicUrl(dataPath);
 
-  if (data.data.publicUrl) {
-    return data.data.publicUrl;
+  if (resp.data.publicUrl) {
+    return resp.data.publicUrl;
   } else {
     console.error('获取公共链接失败');
     return null;
@@ -120,11 +121,13 @@ export async function downloadWmaFile(dataPath: string) {
   // 定义临时文件路径
   const fileUri = `${FileSystem.cacheDirectory}${dataPath}`;
   // 将 blob 数据转换为 base64 字符串
-  const blobToBase64 = (blob) => {
+  const blobToBase64 = (blob: any) => {
     return new Promise((resolve, reject) => {
-      const reader = new FileReader();
+      const reader: any = new FileReader();
       reader.onloadend = () => {
-        resolve(reader.result.split(',')[1]); // 只保留 base64 部分
+        if (reader.result) {
+          resolve(reader.result?.split(',')[1]); // 只保留 base64 部分
+        }
       };
       reader.onerror = reject;
       reader.readAsDataURL(blob);
@@ -133,7 +136,7 @@ export async function downloadWmaFile(dataPath: string) {
   // 将 blob 数据转换为 base64 字符串并写入文件
   await FileSystem.writeAsStringAsync(
     fileUri,
-    await blobToBase64(response.data),
+    (await blobToBase64(response.data)) as string,
     {
       encoding: FileSystem.EncodingType.Base64,
     }

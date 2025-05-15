@@ -84,7 +84,7 @@ export const LoginForm = ({}: LoginFormProps) => {
     const { data, error } = await supabase.auth.verifyOtp({
       email: form.email,
       token: form.verifyCode,
-      type: 'signUp',
+      type: 'signup',
     });
     console.log({ data });
 

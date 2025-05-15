@@ -12,7 +12,7 @@ export const client = axios.create({
   },
 });
 
-client.interceptors.request.use(async (config) => {
+client.interceptors.request.use(async (config: any) => {
   if (config.skipAuth) return config;
   const token = await getCurrentUserAnnoAuthorization();
   if (token) {

@@ -3,8 +3,7 @@ import '../../global.css';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { ThemeProvider } from '@react-navigation/native';
-import * as Linking from 'expo-linking';
-import { Stack, useNavigation } from 'expo-router';
+import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React from 'react';
 import { StyleSheet } from 'react-native';
@@ -18,8 +17,6 @@ import { useThemeConfig } from '@/lib/use-theme-config';
 import { hydrateUserInfo } from '@/store/user';
 
 export { ErrorBoundary } from 'expo-router';
-
-const prefix = Linking.createURL('/');
 
 export const unstable_settings = {
   initialRouteName: '(app)',
@@ -37,7 +34,6 @@ SplashScreen.setOptions({
 });
 
 export default function RootLayout() {
-  const { navigate } = useNavigation();
   return (
     <Providers>
       <Stack

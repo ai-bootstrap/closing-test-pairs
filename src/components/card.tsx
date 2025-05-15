@@ -26,30 +26,34 @@ export const Card = ({ apk_link, google_group_link }: Props) => {
           }}
         />
 
-        <View className="p-2">
-          <Text className="py-3 text-2xl ">Google Group</Text>
-          <Text
-            numberOfLines={3}
-            className="leading-snug text-gray-600"
-            onPress={() => {
-              Linking.openURL(google_group_link);
-            }}
-          >
-            {google_group_link}
-          </Text>
-        </View>
-        <View className="p-2">
-          <Text className="py-3 text-2xl ">Closing Test APK</Text>
-          <Text
-            numberOfLines={3}
-            className="leading-snug text-gray-600"
-            onPress={() => {
-              Linking.openURL(apk_link);
-            }}
-          >
-            {apk_link}
-          </Text>
-        </View>
+        {google_group_link && (
+          <View className="p-2">
+            <Text className="py-3 text-2xl ">Google Group</Text>
+            <Text
+              numberOfLines={3}
+              className="leading-snug text-gray-600"
+              onPress={() => {
+                Linking.openURL(google_group_link);
+              }}
+            >
+              {google_group_link}
+            </Text>
+          </View>
+        )}
+        {apk_link && (
+          <View className="p-2">
+            <Text className="py-3 text-2xl ">Closing Test APK</Text>
+            <Text
+              numberOfLines={3}
+              className="leading-snug text-gray-600"
+              onPress={() => {
+                Linking.openURL(apk_link);
+              }}
+            >
+              {apk_link}
+            </Text>
+          </View>
+        )}
       </View>
     </Pressable>
   );
