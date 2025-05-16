@@ -1,4 +1,3 @@
-import { Env } from 'env';
 import React, { useEffect, useRef } from 'react';
 import { Platform } from 'react-native';
 import {
@@ -7,6 +6,8 @@ import {
   TestIds,
   useForeground,
 } from 'react-native-google-mobile-ads';
+
+import { Env } from '@/lib/env';
 const bannerAdUnitId =
   Platform.OS === 'ios'
     ? 'ca-app-pub-8308256891764581/3031782660'

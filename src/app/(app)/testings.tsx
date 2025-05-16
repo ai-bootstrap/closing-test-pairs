@@ -5,6 +5,7 @@ import { ActivityIndicator } from 'react-native'; // Import ActivityIndicator fo
 
 import { useAppFormByUserId } from '@/api/supabase/use-app-forms';
 import { useGetMyTestings } from '@/api/supabase/use-testings';
+import BannerAdUnit from '@/components/adunits/banner';
 import {
   Button,
   EmptyList,
@@ -171,6 +172,7 @@ export default function Testings() {
         refreshing={refreshing}
         onRefresh={onRefresh}
       />
+      <BannerAdUnit />
     </View>
   );
 }

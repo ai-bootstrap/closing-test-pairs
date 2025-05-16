@@ -81,6 +81,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       'react-native-google-mobile-ads',
       {
         androidAppId: Env.GOOGLE_AD_APP_ID,
+        iosAppId: '',
         android: {
           playServicesAdsVersion: '22.5.0',
         },
