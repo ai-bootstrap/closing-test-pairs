@@ -14,7 +14,7 @@ import {
   Text,
   View,
 } from '@/components/ui';
-import { Github, Rate, Share, Support, Website } from '@/components/ui/icons';
+import { Github, Website } from '@/components/ui/icons';
 import { translate, useAuth } from '@/lib';
 
 export default function Settings() {
@@ -45,7 +45,7 @@ export default function Settings() {
             <Item text="settings.version" value={Env.VERSION} />
           </ItemsContainer>
 
-          <ItemsContainer title="settings.support_us">
+          {/* <ItemsContainer title="settings.support_us">
             <Item
               text="settings.share"
               icon={<Share color={iconColor} />}
@@ -61,7 +61,7 @@ export default function Settings() {
               icon={<Support color={iconColor} />}
               onPress={() => {}}
             />
-          </ItemsContainer>
+          </ItemsContainer> */}
 
           <ItemsContainer title="settings.links">
             <Item text="settings.privacy" onPress={() => {}} />

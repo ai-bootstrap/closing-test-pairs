@@ -3,7 +3,6 @@ import { useNavigation } from 'expo-router';
 import React, { useEffect } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { showMessage } from 'react-native-flash-message';
-import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 
 import { useCreateTestingApp } from '@/api/supabase/use-app-forms';
 import {
@@ -13,13 +12,12 @@ import {
   Text,
   View,
 } from '@/components/ui';
-import { useAuth } from '@/lib';
+import KeyboardAvoidingComponent from '@/components/ui/KeyboardAvoidingView';
 import { useUserInfo } from '@/store/user';
 import { type AppFormType, schema } from '@/types';
 
 export default function AddAppScreen() {
   const userInfo = useUserInfo();
-  const auth = useAuth();
   const navigation = useNavigation();
   const { handleSubmit, control } = useForm<AppFormType>({
     resolver: zodResolver(schema),
@@ -66,19 +64,15 @@ export default function AddAppScreen() {
   }, [navigation]);
 
   return (
-    <View className="h-full flex-1">
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior="padding"
-        keyboardVerticalOffset={10}
-      >
+    <KeyboardAvoidingComponent>
+      <View className="h-full flex-1">
         <View className="flex-1 justify-center p-4">
           <View className="items-center justify-center">
             <Text
               testID="form-title"
               className="pb-6 text-center text-4xl font-bold"
             >
-              Add My App
+              Add App
             </Text>
 
             <Text className="mb-6 max-w-xs text-center text-gray-500">
@@ -131,7 +125,7 @@ export default function AddAppScreen() {
             onPress={handleSubmit(saveApp)}
           />
         </View>
-      </KeyboardAvoidingView>
-    </View>
+      </View>
+    </KeyboardAvoidingComponent>
   );
 }
