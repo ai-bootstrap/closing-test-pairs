@@ -1,6 +1,8 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { Env } from '@env';
 import { useColorScheme } from 'nativewind';
+import React from 'react';
+import { Linking } from 'react-native';
 
 import { Item } from '@/components/settings/item';
 import { ItemsContainer } from '@/components/settings/items-container';
@@ -15,6 +17,7 @@ import {
   View,
 } from '@/components/ui';
 import { Github, Website } from '@/components/ui/icons';
+import { PrivacyAndPolicyUrl, TermsAndConditionUrl } from '@/constants';
 import { translate, useAuth } from '@/lib';
 
 export default function Settings() {
@@ -64,8 +67,18 @@ export default function Settings() {
           </ItemsContainer> */}
 
           <ItemsContainer title="settings.links">
-            <Item text="settings.privacy" onPress={() => {}} />
-            <Item text="settings.terms" onPress={() => {}} />
+            <Item
+              text="settings.privacy"
+              onPress={() => {
+                Linking.openURL(PrivacyAndPolicyUrl);
+              }}
+            />
+            <Item
+              text="settings.terms"
+              onPress={() => {
+                Linking.openURL(TermsAndConditionUrl);
+              }}
+            />
             <Item
               text="settings.github"
               icon={<Github color={iconColor} />}

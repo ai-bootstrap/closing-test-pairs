@@ -79,7 +79,10 @@ export const useGoogleSignIn = () => {
         }
       }
     } catch (error: any) {
-      Alert.alert('Google Sign In', JSON.stringify(error));
+      Alert.alert(
+        'Google SignIn Error, Please contact Author',
+        JSON.stringify(error)
+      );
 
       console.log(error, 'catch error999');
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {

@@ -25,10 +25,10 @@ console.log(Env.PACKAGE, 'Env.PACKAGE');
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: Env.NAME,
-  description: `${Env.NAME} Mobile App`,
+  description: `${Env.NAME}`,
   owner: Env.EXPO_ACCOUNT_OWNER,
   scheme: Env.SCHEME,
-  slug: 'obytesapp',
+  slug: 'ClosingTestPairs',
   version: Env.VERSION.toString(),
   orientation: 'portrait',
   icon: './assets/image.png',
@@ -53,7 +53,11 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       foregroundImage: './assets/image.png',
       backgroundColor: '#2E3C4B',
     },
-    versionCode: 3,
+    config: {
+      // googleMobileAdsAppId: Env.GOOGLE_AD_APP_ID,
+      googleMobileAdsAutoInit: true,
+    },
+    versionCode: 4,
     package: Env.PACKAGE,
     intentFilters: [
       {
@@ -73,6 +77,15 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     bundler: 'metro',
   },
   plugins: [
+    [
+      'react-native-google-mobile-ads',
+      {
+        androidAppId: Env.GOOGLE_AD_APP_ID,
+        android: {
+          playServicesAdsVersion: '22.5.0',
+        },
+      },
+    ],
     [
       'expo-splash-screen',
       {
@@ -98,6 +111,22 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     'expo-router',
     ['app-icon-badge', appIconBadgeConfig],
     ['react-native-edge-to-edge'],
+    [
+      'expo-build-properties',
+      {
+        android: {
+          // compileSdkVersion: 35,
+          // targetSdkVersion: 35,
+          // buildToolsVersion: '35.0.0',
+          // MYAPP_RELEASE_STORE_FILE: 'my-release-key.keystore',
+          // MYAPP_RELEASE_KEY_ALIAS: 'my-key-alias',
+          // MYAPP_RELEASE_STORE_PASSWORD: '!2sdlfe&sU9_&3',
+          // MYAPP_RELEASE_KEY_PASSWORD: '!2sdlfe&sU9_&3'
+          // kotlinVersion: '1.9.5',
+          // googlePlayServicesAdsVersion: '22.5.0',
+        },
+      },
+    ],
   ],
   extra: {
     ...ClientEnv,

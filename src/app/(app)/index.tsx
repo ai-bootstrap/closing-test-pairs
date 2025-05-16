@@ -1,25 +1,16 @@
 import { FlashList } from '@shopify/flash-list';
-import React, { useState } from 'react';
+import React from 'react';
 
-import {
-  useAllAppForms,
-  useAppFormByUserId,
-} from '@/api/supabase/use-app-forms';
+import { useAllAppForms } from '@/api/supabase/use-app-forms';
+import BannerAdUnit from '@/components/adunits/banner';
 import { EmptyList, Text, View } from '@/components/ui';
-import { useUserInfo } from '@/store/user';
 import { type AppFormType } from '@/types';
 
 import { TestingItem } from '../../components/testings/item';
 export default function Feed() {
-  const userInfo = useUserInfo();
-
   const { data, isPending, isError, refetch } = useAllAppForms();
   const [refreshing, setRefreshing] = React.useState(false);
-  const [list, setList] = useState<AppFormType[]>([]);
 
-  const { data: myTestings } = useAppFormByUserId({
-    variables: { uid: userInfo!.uid },
-  });
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
     try {
@@ -57,6 +48,7 @@ export default function Feed() {
           refreshing={refreshing}
           onRefresh={onRefresh}
         />
+        <BannerAdUnit />
       </View>
     </View>
   );

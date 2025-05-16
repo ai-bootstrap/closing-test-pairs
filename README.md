@@ -53,4 +53,12 @@ pnpm android
 database password: CkMiW1k4XrGRbzCT
 
 ### Release
-android keystone secret: !2sdlfe&sU9_&3
+
+android keystone secret: !2sdlfe&sU9\_&3
+
+TestInfo:
+closingtestpairs@googlegroups.com
+
+https://play.google.com/store/apps/details?id=com.androidclosingtestpairs.development
+
+https://play.google.com/apps/testing/com.androidclosingtestpairs.development

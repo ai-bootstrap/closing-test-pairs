@@ -9,6 +9,7 @@ import * as z from 'zod';
 import { RESET_PASSWORD_URL } from '@/api/client';
 import Google from '@/components/auth/google';
 import LinkWrapper from '@/components/ui/LinkWrapper';
+import { PrivacyAndPolicyUrl, TermsAndConditionUrl } from '@/constants';
 import { hydrateAuth } from '@/lib';
 import { supabase } from '@/services/supabase';
 
@@ -19,22 +20,18 @@ import {
   showErrorMessage,
   Text,
 } from '../../ui';
-import {
-  checkTokenAndUpdateStore,
-  useAppleSignIn,
-  useGoogleSignIn,
-} from './helpers';
+import { checkTokenAndUpdateStore, useGoogleSignIn } from './helpers';
 
 export const AuthComp = () => {
-  const [mode, setMode] = useState<'SignIn' | 'SignUp'>("SignIn")
-  const { handleSubmit, control, getValues, setValue } = useForm<FormType>({
+  // const [mode, setMode] = useState<'SignIn' | 'SignUp'>('SignIn');
+  const { handleSubmit, control, getValues } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [agree, setAgree] = useState(false);
 
-  const callAppleSignIn = useAppleSignIn();
+  // const callAppleSignIn = useAppleSignIn();
   const callGoogleSignIn = useGoogleSignIn();
 
   hydrateAuth();
@@ -83,7 +80,7 @@ export const AuthComp = () => {
   };
 
   async function checkAgreement() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if (!agree) {
         Alert.alert(
           'Info',
@@ -115,22 +112,22 @@ export const AuthComp = () => {
     if (agreed) callGoogleSignIn();
   }
 
-  async function onPressApple() {
-    const agreed = await checkAgreement();
-    if (agreed) callAppleSignIn();
-  }
+  // async function onPressApple() {
+  //   const agreed = await checkAgreement();
+  //   if (agreed) callAppleSignIn();
+  // }
 
-  async function onPressEmail() {
-    const agreed = await checkAgreement();
-    if (agreed) router.push('/signup');
-  }
+  // async function onPressEmail() {
+  //   const agreed = await checkAgreement();
+  //   if (agreed) router.push('/signup');
+  // }
 
   async function onPressMask() {
     router.push('/(app)');
   }
 
-  async function handleSignUp(){
-    Alert.alert("Please continue with Google", "this page is under building")
+  async function handleSignUp() {
+    Alert.alert('Please continue with Google', 'this page is under building');
   }
 
   return (
@@ -255,14 +252,12 @@ export const AuthComp = () => {
           />
           <Text className="ml-2 mt-1 p-1 text-sm">
             By logging in or creating an account, you agree to our
-            <LinkWrapper src="https://kacoka.co/terms-of-service">
+            <LinkWrapper src={TermsAndConditionUrl}>
               {' '}
               Terms of Service
             </LinkWrapper>
             {''} and {''}
-            <LinkWrapper src="https://kacoka.co/privacy-policy">
-              Privacy Policy
-            </LinkWrapper>
+            <LinkWrapper src={PrivacyAndPolicyUrl}>Privacy Policy</LinkWrapper>
           </Text>
         </View>
 
