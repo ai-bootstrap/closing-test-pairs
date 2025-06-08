@@ -57,7 +57,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       // googleMobileAdsAppId: Env.GOOGLE_AD_APP_ID,
       googleMobileAdsAutoInit: true,
     },
-    versionCode: 7,
+    versionCode: 11,
     package: Env.PACKAGE,
     intentFilters: [
       {

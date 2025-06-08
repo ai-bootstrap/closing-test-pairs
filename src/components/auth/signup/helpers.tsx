@@ -6,6 +6,7 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import { router } from 'expo-router';
 import { Alert } from 'react-native';
 
+import { useLogTrack } from '@/api/supabase/use-log';
 import { hydrateAuth } from '@/lib';
 import { removeToken, setToken } from '@/lib/auth/utils';
 import { supabase } from '@/services/supabase';
@@ -49,6 +50,8 @@ export const useAppleSignIn = () => {
 };
 
 export const useGoogleSignIn = () => {
+  // const { mutateAsync: logTrack } = useLogTrack();
+
   return async () => {
     GoogleSignin.configure({
       scopes: [], // what API you want to access on behalf of the user, default is email and profile
@@ -60,8 +63,21 @@ export const useGoogleSignIn = () => {
         '137136492206-9uk4uovh0h9b3e4cfbfok6ioahi39m9f.apps.googleusercontent.com',
     });
     try {
+      console.log('start google auth', 9990);
+      // await logTrack({
+      //   content: JSON.stringify({ msg: 'start google auth' }),
+      // });
+
       await GoogleSignin.hasPlayServices();
+
+      // await logTrack({
+      //   content: JSON.stringify({ msg: t1, flag: 't1' }),
+      // });
+
       const signResp = await GoogleSignin.signIn();
+      // await logTrack({
+      //   content: JSON.stringify({ msg: signResp, flag: 'signResp' }),
+      // });
 
       if (signResp.type === 'success') {
         const userInfo = signResp.data;
