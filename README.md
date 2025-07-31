@@ -48,13 +48,8 @@ pnpm android
 - [Data fetching](https://starter.obytes.com/guides/data-fetching)
 - [Contribute to starter](https://starter.obytes.com/how-to-contribute/)
 
-### Supabase
-
-database password: CkMiW1k4XrGRbzCT
 
 ### Release
-
-android keystone secret: !2sdlfe&sU9\_&3
 
 TestInfo:
 closingtestpairs@googlegroups.com
