@@ -4,12 +4,12 @@ import {
 } from '@react-native-google-signin/google-signin';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { router } from 'expo-router';
-
-import { createUserProfileIsNotExist } from '@/api/supabase/user/profile';
-import { supabase } from '@/services/supabase';
-import { hydrateAuth } from '@/lib';
 import { Alert } from 'react-native';
+
+import { useLogTrack } from '@/api/supabase/use-log';
+import { hydrateAuth } from '@/lib';
 import { removeToken, setToken } from '@/lib/auth/utils';
+import { supabase } from '@/services/supabase';
 import { setUserInfo } from '@/store/user';
 
 export const useAppleSignIn = () => {
@@ -40,18 +40,19 @@ export const useAppleSignIn = () => {
         throw new Error('No identityToken.');
       }
     } catch (e) {
-      if (e.code === 'ERR_REQUEST_CANCELED') {
-        // handle that the user canceled the sign-in flow
-      } else {
-        // handle other errors
-      }
+      // if (e?.code === 'ERR_REQUEST_CANCELED') {
+      //   // handle that the user canceled the sign-in flow
+      // } else {
+      //   // handle other errors
+      // }
     }
   };
 };
 
 export const useGoogleSignIn = () => {
+  // const { mutateAsync: logTrack } = useLogTrack();
+
   return async () => {
-    
     GoogleSignin.configure({
       scopes: [], // what API you want to access on behalf of the user, default is email and profile
       // ios Only
@@ -62,27 +63,42 @@ export const useGoogleSignIn = () => {
         '137136492206-9uk4uovh0h9b3e4cfbfok6ioahi39m9f.apps.googleusercontent.com',
     });
     try {
+      console.log('start google auth', 9990);
+      // await logTrack({
+      //   content: JSON.stringify({ msg: 'start google auth' }),
+      // });
+
       await GoogleSignin.hasPlayServices();
+
+      // await logTrack({
+      //   content: JSON.stringify({ msg: t1, flag: 't1' }),
+      // });
+
       const signResp = await GoogleSignin.signIn();
+      // await logTrack({
+      //   content: JSON.stringify({ msg: signResp, flag: 'signResp' }),
+      // });
 
       if (signResp.type === 'success') {
-        const  userInfo = signResp.data
+        const userInfo = signResp.data;
         if (userInfo.idToken) {
-          const { data, error } = await supabase.auth.signInWithIdToken({
+          const { data } = await supabase.auth.signInWithIdToken({
             provider: 'google',
             token: userInfo.idToken,
           });
 
           // judge if the expired time is less than now
           // I want to use the logic in several places, so I put it in a function
-          checkTokenAndUpdateStore(data);  
+          checkTokenAndUpdateStore(data);
         } else {
           throw new Error('no ID token present!');
         }
       }
-      
     } catch (error: any) {
-      Alert.alert('Google Sign In', JSON.stringify(error));
+      Alert.alert(
+        'Google SignIn Error, Please contact Author',
+        JSON.stringify(error)
+      );
 
       console.log(error, 'catch error999');
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -98,14 +114,14 @@ export const useGoogleSignIn = () => {
   };
 };
 
-export const checkTokenAndUpdateStore = async (data: any) => { 
+export const checkTokenAndUpdateStore = async (data: any) => {
   if (data.session?.access_token && data.session?.expires_at) {
-    const expiredTime = new Date(data.session.expires_at * 1000); 
+    const expiredTime = new Date(data.session.expires_at * 1000);
     const now = new Date();
-    if (expiredTime < now) {  
+    if (expiredTime < now) {
       console.log('token expired!');
       // clear Token
-      removeToken()
+      removeToken();
       hydrateAuth();
       return;
     }
@@ -113,21 +129,20 @@ export const checkTokenAndUpdateStore = async (data: any) => {
     const userInfo = {
       email: data.user?.email,
       display_name: data.user?.user_metadata.full_name,
-      uid: data.user.id
-    }
+      uid: data.user.id,
+    };
     console.log('userInfo login successful', userInfo);
-  
+
     setUserInfo(userInfo);
 
     // update token in storage
     setToken({
       access: data.session.access_token,
       refresh: data.session.refresh_token,
-    })
+    });
     // call hydrateAuth to update the store
     hydrateAuth();
     router.replace('/(app)');
-
 
     // const name = data.user?.email.split('@')[0];
     // createUserProfileIsNotExist({
@@ -136,4 +151,4 @@ export const checkTokenAndUpdateStore = async (data: any) => {
     //   uid: data.user.id,
     // });
   }
-}
+};

@@ -18,5 +18,5 @@ export async function removeItem(key: string) {
 export default {
   getItem,
   setItem,
-  removeItem
-}
+  removeItem,
+};

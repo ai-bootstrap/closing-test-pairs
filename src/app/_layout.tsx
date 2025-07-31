@@ -6,7 +6,7 @@ import { ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
@@ -23,7 +23,7 @@ export const unstable_settings = {
 };
 
 hydrateAuth();
-hydrateUserInfo()
+hydrateUserInfo();
 loadSelectedTheme();
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -36,12 +36,17 @@ SplashScreen.setOptions({
 export default function RootLayout() {
   return (
     <Providers>
-      <Stack screenOptions={{  
-        headerBackground: () => <View style={{ backgroundColor: '#fff' }} />,
-      }}>
-        <Stack.Screen name="(app)" options={{ headerShown: false, }}  />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="(app)" options={{ headerShown: false }} />
         <Stack.Screen name="onboarding" options={{ headerShown: false }} />
-        <Stack.Screen name="user/login_email" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="user/login_email"
+          options={{ headerShown: false }}
+        />
         {/* <Stack.Screen name="testings/add" options={{ headerShown: false }} /> */}
       </Stack>
     </Providers>

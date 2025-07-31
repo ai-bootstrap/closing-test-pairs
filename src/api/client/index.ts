@@ -1,11 +1,10 @@
 import axios from 'axios';
 import { router } from 'expo-router';
 
-export const WORKERS_URL = `https://api.kacoka.co`;
-
 // const WORKERS_URL = `http://172.20.10.3:3000`;
-
 import { getCurrentUserAnnoAuthorization } from '@/services/supabase';
+
+export const WORKERS_URL = `https://api.kacoka.co`;
 export const client = axios.create({
   baseURL: WORKERS_URL,
   headers: {
@@ -13,7 +12,7 @@ export const client = axios.create({
   },
 });
 
-client.interceptors.request.use(async (config) => {
+client.interceptors.request.use(async (config: any) => {
   if (config.skipAuth) return config;
   const token = await getCurrentUserAnnoAuthorization();
   if (token) {

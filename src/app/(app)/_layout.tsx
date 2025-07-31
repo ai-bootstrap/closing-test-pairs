@@ -1,16 +1,14 @@
 /* eslint-disable react/no-unstable-nested-components */
-import { Link, Redirect, SplashScreen, Tabs } from 'expo-router';
-import React, { useCallback, useEffect } from 'react';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Pressable, SafeAreaView, Text } from '@/components/ui';
-import {
-  Feed as FeedIcon,
-  Settings as SettingsIcon,
-  Style as StyleIcon,
-} from '@/components/ui/icons';
-import { useAuth, useIsFirstTime } from '@/lib';
+import { Redirect, SplashScreen, Tabs } from 'expo-router';
+import React, { useCallback, useEffect } from 'react';
 import { Linking } from 'react-native';
+
+import Header from '@/components/Header';
+import { Pressable, Text } from '@/components/ui';
+import { Feed as FeedIcon } from '@/components/ui/icons';
+import { useAuth, useIsFirstTime } from '@/lib';
 
 export default function TabLayout() {
   const status = useAuth.use.status();
@@ -26,9 +24,9 @@ export default function TabLayout() {
     }
   }, [hideSplash, status]);
 
-  if (isFirstTime) {
-    return <Redirect href="/onboarding" />;
-  }
+  // if (isFirstTime) {
+  //   return <Redirect href="/onboarding" />;
+  // }
   // TODO: release these block before production
   if (status === 'signOut') {
     return <Redirect href="/user/login" />;
@@ -38,10 +36,11 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
+          header: () => <Header />,
+          headerTransparent: true,
           title: 'All',
           tabBarIcon: ({ color }) => <FeedIcon color={color} />,
-          headerRight: () => <CreateNewPostLink />,
-          tabBarButtonTestID: 'feed-tab',
+          // tabBarButtonTestID: 'feed-tab',
         }}
       />
 
@@ -50,7 +49,9 @@ export default function TabLayout() {
         options={{
           title: 'Testings',
           // headerShown: false,
-          tabBarIcon: ({ color }) => <AntDesign name='android' size={20} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="android" size={20} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
@@ -58,7 +59,9 @@ export default function TabLayout() {
         options={{
           title: 'Settings',
           headerShown: false,
-          tabBarIcon: ({ color }) => <MaterialIcons name="settings" size={24} color="black" />,
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="settings" size={24} color="black" />
+          ),
           tabBarButtonTestID: 'settings-tab',
         }}
       />
@@ -69,11 +72,13 @@ export default function TabLayout() {
 const CreateNewPostLink = () => {
   return (
     // <Link href="/feed/add-post" asChild>
-      <Pressable onPress={()=>{
-        Linking.openURL('ClosingTestPairs://check')
-      }}>
-        <Text className="px-3 text-primary-300">Create</Text>
-      </Pressable>
+    <Pressable
+      onPress={() => {
+        Linking.openURL('ClosingTestPairs://check');
+      }}
+    >
+      <Text className="px-3 text-primary-300">Create</Text>
+    </Pressable>
     // </Link>
   );
 };

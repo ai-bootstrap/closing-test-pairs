@@ -1,23 +1,26 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'; // 添加 MaterialIcons 导入
 import { zodResolver } from '@hookform/resolvers/zod';
-import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import { Alert, Pressable,  } from 'react-native';
+import { Alert, Pressable } from 'react-native';
 import * as z from 'zod';
 
 import { RESET_PASSWORD_URL } from '@/api/client';
-import Apple from '@/components/auth/apple';
-import Google from '@/components/auth/google'; 
-// import { createUserProfileIsNotExist } from '@/services/profile-services';
-import { supabase } from '@/services/supabase';  
-
-import { checkTokenAndUpdateStore, useAppleSignIn, useGoogleSignIn } from './auth/signup/helpers';
 import { createUserProfileIsNotExist } from '@/api/supabase/user/profile';
+import Apple from '@/components/auth/apple';
+import Google from '@/components/auth/google';
 import { hydrateAuth } from '@/lib';
-import { setItem, getItem } from '@/lib/storage';
-import { ControlledInput ,Text, Button,View, showErrorMessage} from './ui';
+import { getItem } from '@/lib/storage';
+// import { createUserProfileIsNotExist } from '@/services/profile-services';
+import { supabase } from '@/services/supabase';
+
+import {
+  checkTokenAndUpdateStore,
+  useAppleSignIn,
+  useGoogleSignIn,
+} from './auth/signup/helpers';
+import { Button, ControlledInput, showErrorMessage, Text, View } from './ui';
 
 const schema = z.object({
   name: z.string().optional(),
@@ -40,6 +43,7 @@ export type LoginFormProps = {
   onSubmit?: SubmitHandler<FormType>;
 };
 
+// eslint-disable-next-line max-lines-per-function
 export const LoginForm = ({}: LoginFormProps) => {
   const { handleSubmit, control, getValues, setValue } = useForm<FormType>({
     resolver: zodResolver(schema),
@@ -80,7 +84,7 @@ export const LoginForm = ({}: LoginFormProps) => {
     const { data, error } = await supabase.auth.verifyOtp({
       email: form.email,
       token: form.verifyCode,
-      type: 'signUp',
+      type: 'signup',
     });
     console.log({ data });
 
@@ -101,9 +105,9 @@ export const LoginForm = ({}: LoginFormProps) => {
           password: form.password,
         };
         const { data, error } = await supabase.auth.signInWithPassword(_body);
-        if (error) {    
+        if (error) {
           showErrorMessage(error.message || 'Login failed');
-        } else {  
+        } else {
           checkTokenAndUpdateStore(data);
         }
         setLoading(false);
@@ -243,18 +247,18 @@ export const LoginForm = ({}: LoginFormProps) => {
       </View>
 
       {codeSent ? (
-        <View className="flex w-full flex-row justify-start items-baseline" >
+        <View className="flex w-full flex-row items-baseline justify-start">
           <View className="flex-1">
-          <ControlledInput
-            control={control}
-            name="verifyCode"
-            label="Verify Code (6 digits)"
-            secureTextEntry={true}
-            style={{ borderRadius: 6 }}
-          />
+            <ControlledInput
+              control={control}
+              name="verifyCode"
+              label="Verify Code (6 digits)"
+              secureTextEntry={true}
+              style={{ borderRadius: 6 }}
+            />
           </View>
-          
-          <Button label='Resend' className='flex-1'/>
+
+          <Button label="Resend" className="flex-1" />
         </View>
       ) : (
         <></>

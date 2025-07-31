@@ -1,10 +1,13 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { Env } from '@env';
 import { useColorScheme } from 'nativewind';
+import React from 'react';
+import { Linking } from 'react-native';
 
 import { Item } from '@/components/settings/item';
 import { ItemsContainer } from '@/components/settings/items-container';
 import { LanguageItem } from '@/components/settings/language-item';
+import { ProfileItem } from '@/components/settings/profile-item';
 import { ThemeItem } from '@/components/settings/theme-item';
 import {
   colors,
@@ -13,7 +16,8 @@ import {
   Text,
   View,
 } from '@/components/ui';
-import { Github, Rate, Share, Support, Website } from '@/components/ui/icons';
+import { Github, Website } from '@/components/ui/icons';
+import { PrivacyAndPolicyUrl, TermsAndConditionUrl } from '@/constants';
 import { translate, useAuth } from '@/lib';
 
 export default function Settings() {
@@ -30,6 +34,10 @@ export default function Settings() {
           <Text className="text-xl font-bold">
             {translate('settings.title')}
           </Text>
+          <ItemsContainer title="settings.user">
+            <ProfileItem />
+          </ItemsContainer>
+
           <ItemsContainer title="settings.generale">
             <LanguageItem />
             <ThemeItem />
@@ -40,7 +48,7 @@ export default function Settings() {
             <Item text="settings.version" value={Env.VERSION} />
           </ItemsContainer>
 
-          <ItemsContainer title="settings.support_us">
+          {/* <ItemsContainer title="settings.support_us">
             <Item
               text="settings.share"
               icon={<Share color={iconColor} />}
@@ -56,11 +64,21 @@ export default function Settings() {
               icon={<Support color={iconColor} />}
               onPress={() => {}}
             />
-          </ItemsContainer>
+          </ItemsContainer> */}
 
           <ItemsContainer title="settings.links">
-            <Item text="settings.privacy" onPress={() => {}} />
-            <Item text="settings.terms" onPress={() => {}} />
+            <Item
+              text="settings.privacy"
+              onPress={() => {
+                Linking.openURL(PrivacyAndPolicyUrl);
+              }}
+            />
+            <Item
+              text="settings.terms"
+              onPress={() => {
+                Linking.openURL(TermsAndConditionUrl);
+              }}
+            />
             <Item
               text="settings.github"
               icon={<Github color={iconColor} />}

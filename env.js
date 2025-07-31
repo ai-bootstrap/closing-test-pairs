@@ -85,6 +85,10 @@ const client = z.object({
   VAR_BOOL: z.boolean(),
   SUPABASE_URL: z.string(),
   SUPABASE_ANON_KEY: z.string(),
+  SUPABASE_BUCKET_NAME: z.string(),
+
+  GOOGLE_AD_APP_ID: z.string(),
+  GOOGLE_AD_BANNER_ID: z.string(),
 });
 
 const buildTime = z.object({
@@ -111,6 +115,10 @@ const _clientEnv = {
   VAR_BOOL: process.env.VAR_BOOL === 'true',
   SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
   SUPABASE_URL: process.env.SUPABASE_URL,
+  SUPABASE_BUCKET_NAME: process.env.SUPABASE_BUCKET_NAME,
+
+  GOOGLE_AD_APP_ID: process.env.GOOGLE_AD_APP_ID,
+  GOOGLE_AD_BANNER_ID: process.env.GOOGLE_AD_BANNER_ID,
 };
 
 /**
@@ -120,7 +128,7 @@ const _buildTimeEnv = {
   EXPO_ACCOUNT_OWNER,
   EAS_PROJECT_ID,
   // ADD YOUR ENV VARS HERE TOO
-  SECRET_KEY: process.env.SECRET_KEY,  
+  SECRET_KEY: process.env.SECRET_KEY,
 };
 
 /**

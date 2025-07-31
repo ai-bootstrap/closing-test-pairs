@@ -16,15 +16,9 @@ module.exports = {
   },
   rules: {
     'prettier/prettier': 'warn',
-    'unicorn/filename-case': [
-      'warning',
-      {
-        case: 'kebabCase',
-        ignore: ['/android', '/ios'],
-      },
-    ],
-    'max-params': ['error', 3], // Limit the number of parameters in a function to use object instead
-    'max-lines-per-function': ['error', 70],
+    'unicorn/filename-case': 0,
+    'max-params': ['error', 4], // Limit the number of parameters in a function to use object instead
+    'max-lines-per-function': ['error', 500],
     'react/display-name': 'off',
     'react/no-inline-styles': 'off',
     'react/destructuring-assignment': 'off', // Vscode doesn't support automatically destructuring, it's a pain to add a new variable

@@ -11,7 +11,7 @@ export const getProfile = async (uid: string): Promise<IUserInfo> => {
   return data[0];
 };
 
-export const getProfileByIds = async (uids: Array<string>): Promise<IUserInfo[]> => {
+export const getProfileByIds = async (uids: string[]): Promise<IUserInfo[]> => {
   const { data, error } = await supabase
     .from('profiles')
     .select('*')

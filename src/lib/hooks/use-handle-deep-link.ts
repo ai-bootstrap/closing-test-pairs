@@ -1,6 +1,6 @@
 // hooks/useHandleDeepLink.tsx
-import { useEffect } from 'react';
 import { useRouter } from 'expo-router';
+import { useEffect } from 'react';
 import { Linking } from 'react-native';
 
 type DeepLinkParams = {
@@ -20,7 +20,7 @@ export default function useHandleDeepLink(screenPath: string) {
 
       const queryString = url.split('?')[1];
       if (!queryString) return {};
-      console.log(queryString, 'queryString', url)
+      console.log(queryString, 'queryString', url);
 
       const params: DeepLinkParams = {};
       queryString.split('&').forEach((pair) => {
@@ -58,9 +58,8 @@ export default function useHandleDeepLink(screenPath: string) {
     // Handle deep link if app was launched from one
     Linking.getInitialURL().then((url) => {
       console.log('Deep link url:', url);
-      handleDeepLink(url)
+      handleDeepLink(url);
     });
-
 
     return () => {
       subscription.remove();
